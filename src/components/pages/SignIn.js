@@ -15,7 +15,15 @@ const SignIn = () => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [isDirty, setIsDirty] = useState(true)
-	
+
+	const ProcessCheckingAccount = () => {	
+			dispatch(checkValidAccount({
+				username: username,
+				password: password
+			}))
+			setIsDirty(false)							
+	}
+
 	const UpdateInput = (e, setData) =>{
 		setData(e.target.value)
 		setIsDirty(true)
@@ -67,17 +75,12 @@ const SignIn = () => {
 						</div>
 					</div>
                     <Button 
+					link = '/sign-in'
 					buttonStyle='btn--outline' 
 					buttonSize='btn--large' 
 					buttonColor='white' 
-					onClick={() => 
-						{
-							dispatch(checkValidAccount({
-								username: username,
-								password: password
-							}))
-							setIsDirty(false)
-						}
+					onClick={
+						() => ProcessCheckingAccount()		
 					}
 					> 
 						Sign In

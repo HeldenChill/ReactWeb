@@ -4,16 +4,37 @@ import { createSlice } from "@reduxjs/toolkit";
 //check account function
 //add account function
 //remove account function
+const AccountType = {
+    Admin: "Admin",
+    Seller: "Seller",
+    Insurance: "Insurance",
+    Producer: "Producer",
+    None: "None"
 
+}
 const accounts =  [
     {
-        username : 'admin',
-        password : 'admin'
+        username: 'admin',
+        password: 'admin',
+        type: AccountType.Admin,
     },
 
     {
-        username : 'hello',
-        password : 'goodbye'
+        username: 'seller',
+        password: 'seller',
+        type: AccountType.Seller
+    },
+
+    {
+        username: 'insurance',
+        password: 'insurance',
+        type: AccountType.Insurance
+    },
+
+    {
+        username: 'producer',
+        password: 'producer',
+        type: AccountType.Producer
     }
 ]
 
@@ -21,22 +42,24 @@ export const CheckAccount = createSlice({
     name: 'checkAccount',
     initialState: {
         isCorrect: false,
+        isInAccount: false,
+        typeAccount: AccountType.None
     },
     reducers: {
         checkValidAccount: (state,data) => {
-            let isCorrect = false;
             console.log(data.payload.username)
             console.log(data.payload.password)
-            console.log("Test Redux OK")        
+   
             state.isCorrect = false
+            state.isInAccount = false
             accounts.map((account) => {
                 if(account.username == data.payload.username)
                 {
                     if(account.password == data.payload.password){
-                        state.isCorrect = true;
-                        isCorrect = true;
-                        console.log("Correct username password")
-                        console.log(state.isCorrect)
+                        state.isCorrect = true
+                        state.isInAccount = true
+                        state.typeAccount = account.type
+                        
                         return {
                             ...state,
                             data: {
@@ -46,8 +69,9 @@ export const CheckAccount = createSlice({
                     }                   
                 }
             })
-            if(!isCorrect)
-                console.log("Incorrect username or password")
+            if(state.isInAccount){
+                window.location.href = 'http://localhost:3000/account-page'
+            }
         }
     }
 

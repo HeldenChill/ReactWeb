@@ -10,6 +10,7 @@ import SignUp from './components/pages/SignUp';
 import reportWebVitals from './reportWebVitals';
 import store from './features/store'
 import { Provider } from 'react-redux'
+import AccountPage from './components/pages/AccountPage';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -20,6 +21,7 @@ ReactDOM.render(
         <Route path='services' element ={<Services />} />
         <Route path='products' element ={<Products />} />
         <Route path='sign-up' element = {<SignUp />} />
+        <Route path='account-page' element = {<AccountPage/>}/>
         <Route path='sign-in' element = {<SignIn />} />
       </Route>
     </Routes>

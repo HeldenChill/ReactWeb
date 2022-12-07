@@ -8,6 +8,7 @@
 .home,
 .services,
 .products,
+.account-page,
 .sign-up {
   display: flex;
   height: 90vh;

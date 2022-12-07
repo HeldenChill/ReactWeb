@@ -52,12 +52,12 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li className='nav-item'>
-                  <Link to ='/sign-in' className='nav-links' onClick={closeMobileMenu}>
-                    Sign In
+                  <Link to ='/account-page' className='nav-links' onClick={closeMobileMenu}>
+                    Account
                   </Link>
                 </li>
                 <div className='nav-button'>
-                  <Button buttonStyle='btn--outline' buttonSize='btn-medium'> SIGN UP</Button>
+                  <Button link='/sign-in' buttonStyle='btn--outline' buttonSize='btn-medium'> SIGN IN</Button>
                 </div>
                 
               </ul>
