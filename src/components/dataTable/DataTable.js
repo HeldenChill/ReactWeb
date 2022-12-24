@@ -4,8 +4,9 @@ import TableRow from './TableRow'
 import './DataTable.css'
 import DataForm from './DataForm'
 
-const DataTable = ({rawData}) => {
-  const [tableData,setTableData] = useState(rawData)
+const DataTable = ({rawData, onSave, onUpdate, onDelete, onEdit, onCancel, data, update = false}) => {
+  console.log("Table Render")
+  
   return (
     <>
       <table>
@@ -19,13 +20,19 @@ const DataTable = ({rawData}) => {
           </thead>
           <tbody>
             { 
-              tableData.map(rowData => (
-                <TableRow rowData = {rowData}></TableRow>
+              rawData.map((rowData, index) => (
+                <TableRow rowData={rowData} onDelete={onDelete} onEdit={onEdit} index={index} key={index}></TableRow>
               ))
             }
           </tbody>
       </table>
-      <DataForm></DataForm>
+      <DataForm 
+        onCreate={onSave} 
+        onUpdate={onUpdate}
+        onCancel={onCancel} 
+        data={data}
+        update={update}>
+      </DataForm>
     </>
   )
 }
