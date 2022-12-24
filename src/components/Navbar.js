@@ -4,11 +4,13 @@ import { faB,faTimes,faBars} from '@fortawesome/free-solid-svg-icons'
 import './Navbar.css';
 import { Link } from 'react-router-dom'
 import Button from './Button'
+import useAuthAccount from '../hooks/useAuthAccount';
+import { AccountType } from '../features/AuthProvider';
 
 const Navbar = () => {
   const [click,setClick] = useState(false);
   const [button,setButton] = useState(true);
-
+  const accountState = useAuthAccount()
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
 
@@ -26,14 +28,14 @@ const Navbar = () => {
   window.addEventListener('resize', showButton);
 
   return (
-    <>
+      <>
         <nav className='navbar'>
             <div className='navbar-container'>
               <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
                 TRVL <FontAwesomeIcon icon = {faB} />
               </Link>
               <div className='menu-icon' onClick={handleClick}>
-                <FontAwesomeIcon icon={click ? faTimes : faBars} />
+                <FontAwesomeIcon icon={click ? faTimes : faBars} color="white"/>
               </div>
               <ul className={click ? 'nav-menu active' : 'nav-menu'}>
                 <li className='nav-item'>
@@ -51,20 +53,24 @@ const Navbar = () => {
                     Products
                   </Link>
                 </li>
-                <li className='nav-item'>
-                  <Link to ='/account-page' className='nav-links' onClick={closeMobileMenu}>
-                    Account
-                  </Link>
-                </li>
+                {accountState.accountType === AccountType.Admin 
+                ? <li className='nav-item'>
+                    <Link to ='/accounts' className='nav-links' onClick={closeMobileMenu}>
+                      Accounts
+                    </Link>
+                  </li> : null}
                 <div className='nav-button'>
-                  <Button link='/sign-in' buttonStyle='btn--outline' buttonSize='btn-medium'> SIGN IN</Button>
-                </div>
-                
-              </ul>
-              
+                  <Button 
+                    link='/sign-in' 
+                    buttonStyle='btn--outline' 
+                    buttonSize='btn-medium'
+                    onClick={handleClick}
+                  > {accountState.isInAccount ? "USER" : "SIGN IN"}</Button>
+                </div>              
+              </ul>             
             </div>
         </nav>
-    </>
+      </>
   )
 }
 

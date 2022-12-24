@@ -6,15 +6,16 @@ import DataForm from './DataForm'
 
 const DataTable = ({rawData, onSave, onUpdate, onDelete, onEdit, onCancel, data, update = false}) => {
   console.log("Table Render")
-  
+
   return (
     <>
       <table>
           <thead>
               <tr>
                   <th>Name</th>
-                  <th>Age</th>
-                  <th>Gender</th>
+                  <th>Type</th>
+                  <th>Code</th>
+                  <th>Quantity</th>
                   <th>Actions</th>
               </tr>
           </thead>

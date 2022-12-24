@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 //check account function
 //add account function
 //remove account function
-const AccountType = {
+export const AccountType = {
     Admin: "Admin",
     Seller: "Seller",
     Insurance: "Insurance",
@@ -38,17 +38,16 @@ const accounts =  [
     }
 ]
 
-export const CheckAccount = createSlice({
-    name: 'checkAccount',
+export const AuthProvider = createSlice({
+    name: 'authProvider',
     initialState: {
         isCorrect: false,
         isInAccount: false,
-        typeAccount: AccountType.None
+        accountType: AccountType.None,
+        data : []
     },
     reducers: {
         checkValidAccount: (state,data) => {
-            console.log(data.payload.username)
-            console.log(data.payload.password)
    
             state.isCorrect = false
             state.isInAccount = false
@@ -58,7 +57,7 @@ export const CheckAccount = createSlice({
                     if(account.password == data.payload.password){
                         state.isCorrect = true
                         state.isInAccount = true
-                        state.typeAccount = account.type
+                        state.accountType = account.type
                         
                         return {
                             ...state,
@@ -70,13 +69,18 @@ export const CheckAccount = createSlice({
                 }
             })
             if(state.isInAccount){
-                window.location.href = 'http://localhost:3000/account-page'
+               
             }
+        },
+        logoutAccount: (state) => {
+            state.isCorrect = false
+            state.isInAccount = false
+            state.accountType = AccountType.None
         }
     }
 
 })
 
-export const { checkValidAccount } = CheckAccount.actions;
-export default CheckAccount.reducer;
-export const selectorCheckAccount = (state) => state.checkAccount;
+export const { checkValidAccount, logoutAccount } = AuthProvider.actions;
+export default AuthProvider.reducer;
+export const selectorAuthProvider = (state) => state.authProvider;

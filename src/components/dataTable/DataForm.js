@@ -3,46 +3,69 @@ import { useState,useEffect } from "react";
 
 const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
     const [name, setName] = useState("")
-    const [age, setAge] = useState(18)
-    const [gender, setGender] = useState("Male")
+    const [quantity, setQuantity] = useState(18)
+    const [type, setType] = useState("")
+    const [code, setCode] = useState("")
+    const [error, setError] = useState(false)
 
     useEffect(() => {
         if(update){
             setName(data.name)
-            setAge(data.age)
-            setGender(data.gender)
+            setQuantity(data.quantity)
+            setType(data.type)
+            setCode(data.code)
         }
     }, [update, data])
-const OnSubmitCallBack = function(e){
-    e.preventDefault()
-    if(update){
-        onUpdate({name, age, gender})
+
+
+    const OnSubmitCallBack = function(e){
+        e.preventDefault()
+        if(name === "" || code ===""){
+            setError(true)
+        }
+        else if(update){
+            onUpdate({name, type, code, quantity})
+        }
+        else{
+            onCreate({name, type, code, quantity})
+        }
     }
-    else{
-        onCreate({name, age, gender})
+
+    const UpdateInput = function(e, setData){
+        setData(e.target.value)
+        setError(false)
     }
-}
     return(
         <div className= "data-form">
             <form onSubmit={OnSubmitCallBack}>
                 <div>
                     <label htmlFor= "name">Name</label>
-                    <input type= "text" name="name" id="name" value={name} onChange={e => setName(e.target.value)}/>
+                    <input type= "text" name="name" id="name" value={name} onChange={e => UpdateInput(e, setName)}/>
                 </div>
                 <div>
-                    <label htmlFor="age">Age</label>
-                    <input type= "number" value={age} onChange ={e => setAge(e.target.value)}/>
-                </div>
-                <div>
-                    <label htmlFor="gender" >Gender</label>
-                    <select id="gender" name="gender" value={gender} onChange={e => setGender(e.target.value)}>
-                        <option value= "Male">Male</option>
-                        <option value= "Female">Female</option>
+                <label htmlFor="type" >Type</label>
+                    <select id="type" name="type" value={type} onChange={e => UpdateInput(e, setType)}>
+                        <option value= "Fan">Fan</option>
+                        <option value= "TV">TV</option>
+                        <option value= "Fridge">Fridge</option>
                     </select>
+                </div>
+                <div>
+                    <label htmlFor= "code">Code</label>
+                    <input type= "text" name="code" id="code" value={code} onChange={e => UpdateInput(e, setCode)}/>
+                </div>
+                <div>
+                <label htmlFor="quantity">Quantity</label>
+                    <input type= "number" value={quantity} onChange ={e => UpdateInput(e,setQuantity)}/>
+                </div>              
+                <div>                                 
                     <div>
                         <button className="form-button" type="submit">{update ? "UPDATE": "ADD"}</button>
                         {update ? <button className="form-button" onClick={onCancel}>Cancel</button> : null}
                     </div>
+                </div>
+                <div>
+                    { error ? <label style={{color: "red"}}>Error, You need to enter all the information needed </label> : null}
                 </div>
             </form>
         </div>

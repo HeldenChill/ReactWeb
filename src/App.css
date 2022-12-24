@@ -5,10 +5,11 @@
   font-family: 'PT Sans', sans-serif;
 }
 
+
 .home,
 .services,
 .products,
-.account-page,
+.accounts,
 .sign-up {
   display: flex;
   height: 90vh;

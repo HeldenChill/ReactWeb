@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-import checkAccountReducers  from './CheckAccount'
+import authProviderReducers  from './AuthProvider'
 export default configureStore({
   reducer: {
-      checkAccount: checkAccountReducers,
+      authProvider: authProviderReducers,
   }
 })
 
