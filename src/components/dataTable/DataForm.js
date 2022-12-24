@@ -3,9 +3,10 @@ import { useState,useEffect } from "react";
 
 const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
     const [name, setName] = useState("")
-    const [quantity, setQuantity] = useState(18)
+    const [quantity, setQuantity] = useState(1)
     const [type, setType] = useState("")
     const [code, setCode] = useState("")
+    const [price, setPrice] = useState(1)
     const [error, setError] = useState(false)
 
     useEffect(() => {
@@ -14,6 +15,7 @@ const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
             setQuantity(data.quantity)
             setType(data.type)
             setCode(data.code)
+            setPrice(data.price)
         }
     }, [update, data])
 
@@ -24,10 +26,10 @@ const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
             setError(true)
         }
         else if(update){
-            onUpdate({name, type, code, quantity})
+            onUpdate({name, type, code, quantity, price})
         }
         else{
-            onCreate({name, type, code, quantity})
+            onCreate({name, type, code, quantity, price})
         }
     }
 
@@ -56,8 +58,12 @@ const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
                 </div>
                 <div>
                 <label htmlFor="quantity">Quantity</label>
-                    <input type= "number" value={quantity} onChange ={e => UpdateInput(e,setQuantity)}/>
-                </div>              
+                    <input type= "number" value={quantity} onChange ={e => UpdateInput(e, setQuantity)}/>
+                </div>      
+                <div>
+                <label htmlFor="quantity">Price</label>
+                    <input type= "number" value={quantity} onChange ={e => UpdateInput(e, setPrice)}/>
+                </div>        
                 <div>                                 
                     <div>
                         <button className="form-button" type="submit">{update ? "UPDATE": "ADD"}</button>

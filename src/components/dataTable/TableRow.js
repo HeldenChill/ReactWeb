@@ -7,6 +7,7 @@ const TableRow = ({rowData, onDelete, onEdit, index}) => {
             <td>{rowData.type}</td>
             <td>{rowData.code}</td>
             <td>{rowData.quantity}</td>
+            <td>{rowData.price + "$"}</td>
             <td>
                 <button onClick={() => {
                     onEdit(index)

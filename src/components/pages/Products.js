@@ -11,47 +11,54 @@ const rawData = [
       name: "Electric Fan",
       type: "Fan",
       code: "EF001",
-      quantity: 10
+      quantity: 10,
+      price: 10,
     },
     {
       name: "Ceilling Fan",
       type: "Fan",
       code: "EF002",
-      quantity: 10
+      quantity: 10,
+      price: 10,
     },
     {
       name: "Flat Screen TV - 20inch",
       type: "TV",
       code: "ET001",
-      quantity: 10
+      quantity: 10,
+      price: 10,
     },
     
     {
       name: "Flat Screen TV - 42inch",
       type: "TV",
       code: "ET002",
-      quantity: 10
+      quantity: 10,
+      price: 10,
     },
 
     {
       name: "Flat Screen TV - 65inch",
       type: "TV",
       code: "ET003",
-      quantity: 20
+      quantity: 20,
+      price: 10,
     },
 
     {
       name: "Flat Screen TV - 80inch",
       type: "TV",
       code: "ET004",
-      quantity: 20
+      quantity: 20,
+      price: 10,
     },
 
     {
       name: "Save Energy Fridges",
       type: "Fridge",
       code: "EF001",
-      quantity: 15
+      quantity: 15,
+      price: 10,
     },
   ],
   [
@@ -88,18 +95,18 @@ const Products = () => {
   const [editIndex, setEditIndex] = useState(0)
   
 
-  const onSaveDataTable = function({name, type, code ,quantity}){
+  const onSaveDataTable = function({name, type, code ,quantity, price}){
     const newData = tableData.slice(0, tableData.length)
     newData.push({
-      name, type, code, quantity
+      name, type, code, quantity, price
     })
     setTableData(newData)
   }
 
-  const onUpdateDataTable = function({name, type, code, quantity}){
+  const onUpdateDataTable = function({name, type, code, quantity, price}){
     const newData = tableData.slice(0, tableData.length)
     newData[editIndex] = {
-      name, type, code, quantity
+      name, type, code, quantity, price
     }
     setTableData(newData)
     setEditing(false)

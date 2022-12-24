@@ -16,6 +16,7 @@ const DataTable = ({rawData, onSave, onUpdate, onDelete, onEdit, onCancel, data,
                   <th>Type</th>
                   <th>Code</th>
                   <th>Quantity</th>
+                  <th>Price</th>
                   <th>Actions</th>
               </tr>
           </thead>
