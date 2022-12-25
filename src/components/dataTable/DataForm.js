@@ -1,22 +1,39 @@
 import React from "react";
 import { useState,useEffect } from "react";
-import { ProductType } from "../../features/AuthProvider";
+import { ProductType, ProductStatus } from "../../features/AuthProvider";
 
 const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
+    
+    const [id, setID] = useState(0)
     const [name, setName] = useState("")
-    const [quantity, setQuantity] = useState(1)
     const [type, setType] = useState(ProductType[0])
     const [code, setCode] = useState("")
+    const [errorTime, setErrorTime] = useState(0)
     const [price, setPrice] = useState(1)
+    const [status, setStatus] = useState(ProductStatus[0])
+    const [position, setPosition] = useState("")
+    const [producedBy, setProducedBy] = useState("")
+    const [producedTime, setProducedTime] = useState("")
+    const [soldTime, setSoldTime] = useState("")
+    
+    
+
+
     const [error, setError] = useState(false)
 
     useEffect(() => {
         if(update){
-            setName(data.name)
-            setQuantity(data.quantity)
+            setID(data.id)
+            setName(data.name)         
             setType(data.type)
             setCode(data.code)
+            setErrorTime(data.error_time)
             setPrice(data.price)
+            setStatus(data.status)
+            setPosition(data.position)
+            setProducedBy(data.produced_by)
+            setProducedTime(data.produced_time)
+            setSoldTime(data.sold_time)
         }
     }, [update, data])
 
@@ -27,10 +44,34 @@ const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
             setError(true)
         }
         else if(update){
-            onUpdate({name, type, code, quantity, price})
+            onUpdate({
+                id:id ,
+                name:name, 
+                type:type, 
+                code:code, 
+                error_time:errorTime,
+                price:price,
+                status:status, 
+                position:position,
+                produced_by:producedBy,
+                produced_time:producedTime,
+                sold_time:soldTime
+            })
         }
         else{
-            onCreate({name, type, code, quantity, price})
+            onCreate({
+                id:id ,
+                name:name, 
+                type:type, 
+                code:code, 
+                error_time:errorTime,
+                price:price,
+                status:status, 
+                position:position,
+                produced_by:producedBy,
+                produced_time:producedTime,
+                sold_time:soldTime
+            })
         }
     }
 
@@ -48,8 +89,8 @@ const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
                 <div>
                 <label htmlFor="type" >Type</label>
                     <select id="type" name="type" value={type} onChange={e => UpdateInput(e, setType)}>
-                        {ProductType.map((item) => {
-                            return <option value={item}> {item}</option>                           
+                        {ProductType.map((item, index) => {
+                            return <option value={item} key={index}> {item}</option>                           
                         })}
                     </select>
                 </div>
@@ -58,8 +99,12 @@ const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
                     <input type= "text" name="code" id="code" value={code} onChange={e => UpdateInput(e, setCode)}/>
                 </div>
                 <div>
-                <label htmlFor="quantity">Quantity</label>
-                    <input type= "number" value={quantity} onChange ={e => UpdateInput(e, setQuantity)}/>
+                <label htmlFor="status" >Status</label>
+                    <select id="status" name="type" value={status} onChange={e => UpdateInput(e, setStatus)}>
+                        {ProductStatus.map((item, index) => {
+                            return <option value={item} key={index}> {item}</option>                           
+                        })}
+                    </select>
                 </div>      
                 <div>
                 <label htmlFor="price">Price</label>

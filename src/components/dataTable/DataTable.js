@@ -3,47 +3,53 @@ import { useState, useEffect } from 'react'
 import TableRow from './TableRow'
 import './DataTable.css'
 import DataForm from './DataForm'
+import { ProductStatus, ProductType } from '../../features/AuthProvider'
 
-const DataTable = ({rawData, onSaveServerData}) => {
+const DataTable = ({rawData, onAddServerData, onUpdateServerData, onDeleteServerData}) => {
   console.log("Render DataTable")
   const [name, setName] = useState("")
-  const [quantity, setQuantity] = useState(0)
-  const [type, setType] = useState("")
+  const [status, setStatus] = useState(ProductStatus[0])
+  const [type, setType] = useState(ProductType[0])
   const [code, setCode] = useState("")
   const [price, setPrice] = useState(0)
   const [tableData, setTableData] = useState(rawData)
 
   
   const [editing, setEditing] = useState(false)
-  const [editIndex, setEditIndex] = useState(0)
+  const [editID, setEditID] = useState(0)
   
 
-  const onSave = function({name, type, code ,quantity, price}){
-    const newData = rawData.slice(0, rawData.length)
-    newData.push({
-      name, type, code, quantity, price
-    })
-    onSaveServerData({newData})
-  }
-
-  const onUpdate = function({name, type, code, quantity, price}){
-    const newData = rawData.slice(0, tableData.length)
-    newData[editIndex] = {
-      name, type, code, quantity, price
+  const onSave = function(product){
+    const newProduct = {
+      id: 0,
+      name:product.name, 
+      type:product.type, 
+      code:product.code, 
+      status:product.status, 
+      error_time:product.error_time,
+      price: product.price,
+      status: product.status,
+      position: product.position,
+      produced_by: product.produced_by,
+      produced_time: product.produced_time,
+      sold_time: product.sold_time,                  
     }
-    onSaveServerData({newData})
-    setEditing(false)
-    setEditIndex(0)
-  }
-  const onDelete = function(index){
-    const newData = rawData.slice(0, tableData.length)
-    newData.splice(index, 1)
-    onSaveServerData({newData})
+    onAddServerData(newProduct)
   }
 
-  const onEdit = function(index){
-    setEditing(true)
-    setEditIndex(index)
+  const onUpdate = function(product){   
+    // onSaveServerData({newData})
+    onUpdateServerData(product)
+    setEditing(false)
+    setEditID(0)
+  }
+  const onDelete = function(id){
+    onDeleteServerData(id)  
+  }
+
+  const onEdit = function(id){
+    setEditID(id)
+    setEditing(true)    
   }
 
   const onCancel = function(){
@@ -52,7 +58,7 @@ const DataTable = ({rawData, onSaveServerData}) => {
 
   useEffect(() => {
     onFilter()
-  },[name, onSaveServerData])
+  },[name, onAddServerData, onUpdateServerData, onDeleteServerData])
 
   const onFilter = function(){
     if(name.toLowerCase() === ''){
@@ -73,6 +79,15 @@ const DataTable = ({rawData, onSaveServerData}) => {
     setData(e.target.value)  
   }
 
+  const getData = function(id){
+    for(var i = 0; i < tableData.length; i++){
+      if(tableData[i].id === id){
+        return tableData[i]
+      }
+    }
+    return undefined
+  }
+
   return (
     <>
       <table style={{width: "95%",margin: "auto"}}>
@@ -81,7 +96,7 @@ const DataTable = ({rawData, onSaveServerData}) => {
                   <th>Name</th>
                   <th>Type</th>
                   <th>Code</th>
-                  <th>Quantity</th>
+                  <th>Status</th>
                   <th>Price</th>
                   <th>Actions</th>
               </tr>
@@ -94,12 +109,11 @@ const DataTable = ({rawData, onSaveServerData}) => {
                 </th>
                 <th>
                   <div>
-                  <label htmlFor="type" ></label>
-                      <select id="type" name="type" value={type} onChange={e => UpdateInput(e, setType)}>
-                          <option value= "Fan">Fan</option>
-                          <option value= "TV">TV</option>
-                          <option value= "Fridge">Fridge</option>
-                      </select>
+                    <select id="type" name="type" value={type} onChange={e => UpdateInput(e, setType)}>
+                        {ProductType.map((item, index) => {
+                            return <option value={item} key = {index}> {item}</option>                           
+                        })}
+                    </select>
                   </div>
                 </th>
                 <th>
@@ -110,8 +124,11 @@ const DataTable = ({rawData, onSaveServerData}) => {
                 </th>                
                 <th>
                   <div>
-                  <label htmlFor="quantity"></label>
-                      <input type= "number" value={quantity} onChange ={e => UpdateInput(e, setQuantity)}/>
+                    <select id="status" name="type" value={status} onChange={e => UpdateInput(e, setStatus)}>
+                        {ProductStatus.map((item, index) => {
+                            return <option value={item} key={index}> {item}</option>                           
+                        })}
+                    </select>  
                   </div> 
                 </th>
                 <th>
@@ -122,16 +139,21 @@ const DataTable = ({rawData, onSaveServerData}) => {
                 </th>        
                 <th>
                 <button onClick={() => {
-                    onFilter({name, quantity, type, code, price})
+                    onFilter({name, status, type, code, price})
                 }}>Filter All</button>
                 </th>       
               </tr>
           </thead>
           <tbody>
             { 
-              tableData.map((rowData, index) => (
-                <TableRow rowData={rowData} onDelete={onDelete} onEdit={onEdit} index={index} key={index}></TableRow>
-              ))
+              tableData.map((rowData) => {
+                return <TableRow 
+                rowData={rowData} 
+                onDelete={onDelete} 
+                onEdit={onEdit} 
+                index={rowData.id} 
+                key={rowData.id}></TableRow>
+              })
             }
           </tbody>
       </table>
@@ -139,7 +161,7 @@ const DataTable = ({rawData, onSaveServerData}) => {
         onCreate={onSave} 
         onUpdate={onUpdate}
         onCancel={onCancel} 
-        data={editing ? tableData[editIndex]:{}}
+        data={editing ? getData(editID):{}}
         update={editing}>
       </DataForm>
     </>
