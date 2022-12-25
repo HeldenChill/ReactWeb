@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 const RequireAuth = () => {
     const accountState = useSelector(selectorAuthProvider)   
     const location = useLocation()
-    console.log(accountState)
 
     return(
         accountState?.isInAccount 

@@ -1,42 +1,21 @@
 import React from "react";
 import { useState,useEffect } from "react";
-import { ProductType } from "../../features/AuthProvider";
 
-const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
+const FilterDataForm = ({ onFilter}) => {
     const [name, setName] = useState("")
     const [quantity, setQuantity] = useState(1)
-    const [type, setType] = useState(ProductType[0])
+    const [type, setType] = useState("")
     const [code, setCode] = useState("")
     const [price, setPrice] = useState(1)
-    const [error, setError] = useState(false)
-
-    useEffect(() => {
-        if(update){
-            setName(data.name)
-            setQuantity(data.quantity)
-            setType(data.type)
-            setCode(data.code)
-            setPrice(data.price)
-        }
-    }, [update, data])
 
 
     const OnSubmitCallBack = function(e){
         e.preventDefault()
-        if(name === "" || code ===""){
-            setError(true)
-        }
-        else if(update){
-            onUpdate({name, type, code, quantity, price})
-        }
-        else{
-            onCreate({name, type, code, quantity, price})
-        }
+        onFilter({name, quantity, type, code, price})
     }
 
     const UpdateInput = function(e, setData){
         setData(e.target.value)
-        setError(false)
     }
     return(
         <div className= "data-form">
@@ -48,9 +27,9 @@ const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
                 <div>
                 <label htmlFor="type" >Type</label>
                     <select id="type" name="type" value={type} onChange={e => UpdateInput(e, setType)}>
-                        {ProductType.map((item) => {
-                            return <option value={item}> {item}</option>                           
-                        })}
+                        <option value= "Fan">Fan</option>
+                        <option value= "TV">TV</option>
+                        <option value= "Fridge">Fridge</option>
                     </select>
                 </div>
                 <div>
@@ -67,16 +46,12 @@ const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
                 </div>        
                 <div>                                 
                     <div>
-                        <button className="form-button" type="submit">{update ? "UPDATE": "ADD"}</button>
-                        {update ? <button className="form-button" onClick={onCancel}>Cancel</button> : null}
+                        <button className="form-button" type="submit">FILTER</button>
                     </div>
-                </div>
-                <div>
-                    { error ? <label style={{color: "red"}}>Error, You need to enter all the information needed </label> : null}
                 </div>
             </form>
         </div>
     )
 }
 
-export default DataForm;
+export default FilterDataForm;

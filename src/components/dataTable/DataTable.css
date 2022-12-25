@@ -10,9 +10,13 @@ table{
 
 table th,
 table td{
-    border-bottom: 1px solid #ccc;
-    padding: 4px 8px;
+    border-bottom: 2px solid #dcdcdc;
+    padding: 10px 8px;
     text-align: center;
+}
+
+table th{
+    background-color: #f0f0f088;
 }
 
 .data-form form{
