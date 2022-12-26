@@ -37,6 +37,14 @@ const Products = () => {
     <>
       <DataTable 
         rawData = {data} 
+        selectData = {
+          {
+            dataFeilds:accountState.dataFeilds,
+            productStatus: accountState.statusFeild,
+            positionFeild: accountState.positionFeild,
+            producedByFeild: accountState.producedByFeild
+          }
+        }
         onSaveServerData = {saveServerData}
         onAddServerData = {addServerData}
         onUpdateServerData = {updateServerData}

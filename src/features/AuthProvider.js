@@ -3,12 +3,21 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 export const ProductType = ["Fan" ,"TV" ,"Fridge", "Car"]
-export const ProductStatus = ["In Stock", "On Sale", "Under Warranty", "Error"]
+export const ProductStatus = ["In Stock", "On Sale", "Under Warranty", "Error", "Sold", "Returned"]
+
 export const AccountDataFields = {
     Admin: ["Name", "Type", "Code", "Error Times", "Price", "Status", "Position", "Produced By", "Produced Time", "Sold Time"],
-    Producer: ["Name", "Type", "Code", "Error Times", "Price", "Status", "Position", "Produced Time", "Sold Time"],
+    Producer: ["Name", "Type", "Code", "Error Times", "Status", "Position", "Produced Time", "Sold Time"],
     Seller: ["Name", "Type", "Code", "Price", "Status", "Produced Time", "Sold Time"],
     Insurance: ["Name", "Type", "Code", "Error Times", "Status", "Produced By", "Produced Time"],
+    None: []
+}
+
+export const AccountProductStatus = {
+    Admin: ["In Stock", "On Sale", "Under Warranty", "Error", "Sold", "Returned"],
+    Producer: ["In Stock", "On Sale"],
+    Seller: ["On Sale", "Under Warranty", "Sold", "Returned"],
+    Insurance: ["In Stock", "Under Warranty", "Error"],
     None: []
 }
 export const AccountType = {
@@ -17,6 +26,14 @@ export const AccountType = {
     Insurance: "Insurance",
     Producer: "Producer",
     None: "None"
+
+}
+
+export const AccountsPositions = {
+    Admin: [],
+    Producer: ["Producer1","Producer2"],
+    Seller: ["Seller1", "Seller2", "Seller3", "Seller4"],
+    Insurance: ["Insurance1","Insurance2"]
 
 }
 const accounts =  [
@@ -62,6 +79,7 @@ let tableData = [
         produced_by: "Producer1",
         produced_time: "22-11-2022",
         sold_time: "",
+        customer_id: -1,
       },
       {
         id: 1,
@@ -75,6 +93,7 @@ let tableData = [
         produced_by: "Producer1",
         produced_time: "22-11-2022",
         sold_time: "",
+        customer_id: -1,
       },
       {
         id: 2,
@@ -88,6 +107,7 @@ let tableData = [
         produced_by: "Producer1",
         produced_time: "22-11-2022",
         sold_time: "",
+        customer_id: -1,
       },
       
       {
@@ -102,6 +122,7 @@ let tableData = [
         produced_by: "Producer1",
         produced_time: "22-11-2022",
         sold_time: "",
+        customer_id: -1,
       },
   
       {
@@ -116,6 +137,7 @@ let tableData = [
         produced_by: "Producer1",
         produced_time: "22-11-2022",
         sold_time: "",
+        customer_id: -1,
       },
   
       {
@@ -130,6 +152,7 @@ let tableData = [
         produced_by: "Producer1",
         produced_time: "22-11-2022",
         sold_time: "",
+        customer_id: -1,
       },
   
       {
@@ -144,13 +167,33 @@ let tableData = [
         produced_by: "Producer1",
         produced_time: "22-11-2022",
         sold_time: "",
+        customer_id: -1,
       },
   ]
+let customerData = [
+    {
+        id: 0,
+        name: "Henrry",
+        age: 25,
+        gender: "Male",
+        address: "Hanoi",
+        telephone: "0324678273",
+        buy_product: [
+                {
+                    id: 1,
+                    store: "Seller1",
+                }
+            ]
+    }
+]
 
-const updateTableData = function(state){
+const updateAccountData = function(state){
     if(state.accountType === AccountType.Admin){
         state.data = tableData
         state.dataFeilds = AccountDataFields.Admin
+        state.statusFeild = AccountProductStatus.Admin
+        state.positionFeild = [...AccountsPositions.Producer, ...AccountsPositions.Seller, ...AccountsPositions.Insurance]
+        state.producedByFeild = AccountsPositions.Producer
     }
     else if(state.accountType === AccountType.Producer){
         const newData = []
@@ -161,6 +204,9 @@ const updateTableData = function(state){
         })
         state.data = newData
         state.dataFeilds = AccountDataFields.Producer
+        state.statusFeild = AccountProductStatus.Producer
+        state.positionFeild = [...AccountsPositions.Producer, ...AccountsPositions.Seller]
+        state.producedByFeild = AccountsPositions.Producer
     }
     else if(state.accountType === AccountType.Seller){
         const newData = []
@@ -171,6 +217,8 @@ const updateTableData = function(state){
         })
         state.data = newData
         state.dataFeilds = AccountDataFields.Seller
+        state.statusFeild = AccountProductStatus.Seller
+        state.positionFeild = [...AccountsPositions.Seller, ...AccountsPositions.Insurance]
     }
     else if(state.accountType === AccountType.Insurance){
         const newData = []
@@ -181,8 +229,11 @@ const updateTableData = function(state){
         })
         state.data = newData
         state.dataFeilds = AccountDataFields.Insurance
+        state.statusFeild = AccountProductStatus.Insurance
+        state.positionByFeild = [...AccountsPositions.Insurance, ...AccountsPositions.Producer]
     }
     state.lastID = tableData[tableData.length - 1].id
+    console.log(state.data)
 }
 export const AuthProvider = createSlice({
     name: 'authProvider',
@@ -192,6 +243,9 @@ export const AuthProvider = createSlice({
         accountType: AccountType.None,
         accountPosition: "",
         dataFeilds: [],
+        statusFeild: [],
+        positionFeild: [],
+        producedByFeild: [],
         data : [],
         lastID : 0,
     },
@@ -207,8 +261,8 @@ export const AuthProvider = createSlice({
                         state.isInAccount = true
                         state.accountType = account.type
                         state.accountPosition = account.position
-                        updateTableData(state)                     
-                        console.log(state.data)
+                        updateAccountData(state)                     
+                        
                         return {
                             ...state,
                             data: {
@@ -229,6 +283,9 @@ export const AuthProvider = createSlice({
             state.accountType = AccountType.None
             state.accountPosition = ""
             state.dataFeilds = AccountDataFields.None
+            state.statusFeild = []
+            state.positionFeild = []
+            state.producedByFeild = []
             state.data = []
         },
 
@@ -250,7 +307,7 @@ export const AuthProvider = createSlice({
             }
             newData.push(newDataProduct)        
             tableData = newData
-            updateTableData(state)
+            updateAccountData(state)
         },
 
         updateData: (state, data) => {
@@ -275,7 +332,7 @@ export const AuthProvider = createSlice({
                 }
             })
             tableData = newData
-            updateTableData(state)
+            updateAccountData(state)
         },
 
         deleteData: (state, data) => {
@@ -287,7 +344,7 @@ export const AuthProvider = createSlice({
                 }
             }
             tableData = newData
-            updateTableData(state)
+            updateAccountData(state)
         }
     }
 

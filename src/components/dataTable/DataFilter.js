@@ -1,9 +1,8 @@
-import "./DataFilter.css"
+import "./DataForm.css"
 import { ProductType, ProductStatus } from "../../features/AuthProvider"
 import useAuthAccount from "../../hooks/useAuthAccount"
 
-const DataFilter = ({prop,setProp}) => {
-    const dataFeilds = useAuthAccount().dataFeilds
+const DataFilter = ({prop,setProp,dataFeilds}) => {
     const UpdateInput = function(e, setData){
         setData(e.target.value)  
     }
@@ -48,10 +47,10 @@ const DataFilter = ({prop,setProp}) => {
                 return  <th key={key} className="filter-th">
                             <div style={{display: "flex"}}>
                                 <div style={{paddingRight: "1px",maxWidth:"40%",margin:"auto"}}>
-                                    <input style={{maxWidth: "100%"}} type= "text" name="price" id="price" value={prop.price} onChange={e => UpdateInput(e, setProp.setPrice)}/>                              
+                                    <input style={{maxWidth: "100%"}} type= "text" name="price" id="price" value={prop.priceMin} onChange={e => UpdateInput(e, setProp.setPriceMin)}/>                              
                                 </div>
                                 <div style={{paddingLeft: "1px",maxWidth:"40%",margin:"auto"}}>
-                                    <input style={{maxWidth: "100%"}} type= "text" name="price" id="price" value={prop.price} onChange={e => UpdateInput(e, setProp.setPrice)}/>
+                                    <input style={{maxWidth: "100%"}} type= "text" name="price" id="price" value={prop.priceMax} onChange={e => UpdateInput(e, setProp.setPriceMax)}/>
                                 </div>
                             </div>
                         </th> 
@@ -82,20 +81,20 @@ const DataFilter = ({prop,setProp}) => {
             case "Produced Time":
                 return <th key={key} className="filter-th">
                             <div style={{paddingBottom: "1px"}}>
-                                <input style={{maxWidth: "80%"}} type= "text" name="produced_time" id="produced_time" value={prop.producedTime} onChange={e => UpdateInput(e, setProp.setProducedTime)}/>                              
+                                <input style={{maxWidth: "80%"}} type= "text" name="produced_time" id="produced_time" value={prop.producedTimeMin} onChange={e => UpdateInput(e, setProp.setProducedTimeMin)}/>                              
                             </div>
                             <div style={{paddingTop: "1px"}}>
-                                <input style={{maxWidth: "80%"}} type= "text" name="produced_time" id="produced_time" value={prop.producedTime} onChange={e => UpdateInput(e, setProp.setProducedTime)}/>
+                                <input style={{maxWidth: "80%"}} type= "text" name="produced_time" id="produced_time" value={prop.producedTimeMax} onChange={e => UpdateInput(e, setProp.setProducedTimeMax)}/>
                             </div>
                             
                         </th>
             case "Sold Time":
                 return <th key={key} className="filter-th">
                             <div style={{paddingBottom: "1px"}}>
-                                <input style={{maxWidth: "80%"}} type= "text" name="sold_time" id="sold_time" value={prop.soldTime} onChange={e => UpdateInput(e, setProp.setSoldTime)}/>                              
+                                <input style={{maxWidth: "80%"}} type= "text" name="sold_time" id="sold_time" value={prop.soldTimeMin} onChange={e => UpdateInput(e, setProp.setSoldTimeMin)}/>                              
                             </div>
                             <div style={{paddingTop: "1px"}}>
-                                <input style={{maxWidth: "80%"}} type= "text" name="sold_time" id="produced_sold_timetime" value={prop.soldTime} onChange={e => UpdateInput(e, setProp.setSoldTime)}/>
+                                <input style={{maxWidth: "80%"}} type= "text" name="sold_time" id="produced_sold_timetime" value={prop.soldTimeMax} onChange={e => UpdateInput(e, setProp.setSoldTimeMax)}/>
                             </div>
                         </th>
         }

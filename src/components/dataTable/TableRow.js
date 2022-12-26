@@ -1,9 +1,13 @@
 import React from "react";
-import useAuthAccount from "../../hooks/useAuthAccount";
+import { useState } from "react";
+import DataEdit from "./DataEdit";
 import './DataTable.css';
 
-const TableRow = ({rowData, onDelete, onEdit, index}) => {
-    const dataFeilds = useAuthAccount().dataFeilds
+const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, id}) => {
+    const [update,setUpdate] = useState(false)
+    const dataFeilds = selectData.dataFeilds
+    const productStatus = selectData.productStatus
+
     const createDataFeild = function(name, key){
         switch(name){
             case "Name":
@@ -28,19 +32,39 @@ const TableRow = ({rowData, onDelete, onEdit, index}) => {
                 return <td key={key}>{rowData.sold_time}</td>
         }
     }
-    return(
-        <tr>
-            {dataFeilds.map((item, index) => createDataFeild(item, index))}
-            <td>
-                <button onClick={() => {
-                    onEdit(index)
-                }}>Edit</button>
 
-                <button onClick={() => {
-                    onDelete(index)
-                }}>Delete</button>
-            </td>
-        </tr>  
+    let feild
+    if(!update){
+        feild = <tr>
+                    {dataFeilds.map((item, index) => createDataFeild(item, index))}
+                    <td style={{minWidth: "110px"}}>
+                        <button style={{width: "48px"}} onClick={() => {
+                            setUpdate(true)
+                        }}>Edit</button>
+
+                        <button style={{width: "48px"}} onClick={() => {
+                            onDelete(id)
+                        }}>Delete</button>
+                    </td>
+                </tr>
+        
+    }
+    else{
+        feild = <DataEdit
+                    onCreate={onCreate}
+                    onUpdate={onUpdate}
+                    onCancel={() => setUpdate(false)}
+                    selectData={selectData}
+                    data={rowData}
+                    isCreate={false}
+                ></DataEdit>
+    }
+
+
+    return(
+        <>
+            {(feild)}   
+        </>               
     )
 }
 
