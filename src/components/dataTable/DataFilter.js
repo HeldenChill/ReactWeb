@@ -81,20 +81,20 @@ const DataFilter = ({prop,setProp,dataFeilds}) => {
             case "Produced Time":
                 return <th key={key} className="filter-th">
                             <div style={{paddingBottom: "1px"}}>
-                                <input style={{maxWidth: "80%"}} type= "text" name="produced_time" id="produced_time" value={prop.producedTimeMin} onChange={e => UpdateInput(e, setProp.setProducedTimeMin)}/>                              
+                                <input style={{maxWidth: "90%"}} type= "date" name="produced_time" id="produced_time" value={prop.producedTimeMin} onChange={e => UpdateInput(e, setProp.setProducedTimeMin)}/>                              
                             </div>
                             <div style={{paddingTop: "1px"}}>
-                                <input style={{maxWidth: "80%"}} type= "text" name="produced_time" id="produced_time" value={prop.producedTimeMax} onChange={e => UpdateInput(e, setProp.setProducedTimeMax)}/>
+                                <input style={{maxWidth: "90%"}} type= "date" name="produced_time" id="produced_time" value={prop.producedTimeMax} onChange={e => UpdateInput(e, setProp.setProducedTimeMax)}/>
                             </div>
                             
                         </th>
             case "Sold Time":
                 return <th key={key} className="filter-th">
                             <div style={{paddingBottom: "1px"}}>
-                                <input style={{maxWidth: "80%"}} type= "text" name="sold_time" id="sold_time" value={prop.soldTimeMin} onChange={e => UpdateInput(e, setProp.setSoldTimeMin)}/>                              
+                                <input style={{maxWidth: "90%"}} type= "date" name="sold_time" id="sold_time" value={prop.soldTimeMin} onChange={e => UpdateInput(e, setProp.setSoldTimeMin)}/>                              
                             </div>
                             <div style={{paddingTop: "1px"}}>
-                                <input style={{maxWidth: "80%"}} type= "text" name="sold_time" id="produced_sold_timetime" value={prop.soldTimeMax} onChange={e => UpdateInput(e, setProp.setSoldTimeMax)}/>
+                                <input style={{maxWidth: "90%"}} type= "date" name="sold_time" id="produced_sold_timetime" value={prop.soldTimeMax} onChange={e => UpdateInput(e, setProp.setSoldTimeMax)}/>
                             </div>
                         </th>
         }

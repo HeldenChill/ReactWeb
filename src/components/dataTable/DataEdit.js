@@ -3,21 +3,22 @@ import { ProductType } from "../../features/AuthProvider"
 import { useState } from "react"
 import useAuthAccount from "../../hooks/useAuthAccount"
 import { AccountType } from "../../features/AuthProvider"
+import { DefaultProduct } from "../../features/AuthProvider"
 
-const DataEdit = ({onCreate, onUpdate, onCancel, selectData, data, isCreate=false}) => {
-
-    const [id, setID] = useState(data.id)
-    const [name, setName] = useState(data.name)
-    const [type, setType] = useState(data.type)
-    const [code, setCode] = useState(data.code)
-    const [errorTimes, setErrorTimes] = useState(data.error_times)
-    const [price, setPrice] = useState(data.price)
-    const [status, setStatus] = useState(data.status)
-    const [position, setPosition] = useState(data.position)
-    const [producedBy, setProducedBy] = useState(data.produced_by)
-    const [producedTime, setProducedTime] = useState(data.produced_time)
-    const [soldTime, setSoldTime] = useState(data.sold_time)
-    const [customerId, setCustomerId] = useState(data.customer_id)
+const DataEdit = ({onCreate, onUpdate, onCancel, selectData, isCreate=false}) => {
+   
+    const [id, setID] = useState(DefaultProduct.id)
+    const [name, setName] = useState(DefaultProduct.name)
+    const [type, setType] = useState(DefaultProduct.type)
+    const [code, setCode] = useState(DefaultProduct.code)
+    const [errorTimes, setErrorTimes] = useState(DefaultProduct.error_times)
+    const [price, setPrice] = useState(DefaultProduct.price)
+    const [status, setStatus] = useState(DefaultProduct.status)
+    const [position, setPosition] = useState(DefaultProduct.position)
+    const [producedBy, setProducedBy] = useState(DefaultProduct.produced_by)
+    const [producedTime, setProducedTime] = useState(DefaultProduct.produced_time)
+    const [soldTime, setSoldTime] = useState(DefaultProduct.sold_time)
+    const [customerId, setCustomerId] = useState(DefaultProduct.customer_id)
     
     const dataFeilds = selectData.dataFeilds
     const positionFeild = selectData.positionFeild
@@ -140,11 +141,11 @@ const DataEdit = ({onCreate, onUpdate, onCancel, selectData, data, isCreate=fals
                         </td>
             case "Produced Time":
                 return <td key={key} className="edit-td">
-                            <input disabled={isSeller || isInsurance} style={{maxWidth: "80%"}} type= "text" name="produced_time" id="produced_time" value={producedTime} onChange={e => UpdateInput(e, setProducedTime)}/>                                                                      
+                            <input disabled={isSeller || isInsurance} style={{maxWidth: "90%"}} type= "date" name="produced_time" id="produced_time" value={producedTime} onChange={e => UpdateInput(e, setProducedTime)}/>                                                                      
                         </td>
             case "Sold Time":
                 return <td key={key} className="edit-td">
-                            <input style={{maxWidth: "80%"}} type= "text" name="sold_time" id="sold_time" value={soldTime} onChange={e => UpdateInput(e, setSoldTime)}/>                              
+                            <input style={{maxWidth: "90%"}} type= "date" name="sold_time" id="sold_time" value={soldTime} onChange={e => UpdateInput(e, setSoldTime)}/>                              
                         </td>
         }
     }

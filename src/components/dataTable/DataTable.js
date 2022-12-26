@@ -18,19 +18,26 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
   const [status, setStatus] = useState(ProductStatus[0])
   const [position, setPosition] = useState("")
   const [producedBy, setProducedBy] = useState("")
-  const [producedTimeMin, setProducedTimeMin] = useState("")
-  const [producedTimeMax, setProducedTimeMax] = useState("")
+  const [producedTimeMin, setProducedTimeMin] = useState("2022-01-01")
+  const [producedTimeMax, setProducedTimeMax] = useState("2022-01-01")
   const [soldTimeMin, setSoldTimeMin] = useState("")
   const [soldTimeMax, setSoldTimeMax] = useState("")
   const [customerID, setCustomerID] = useState(-1)
 
   const [tableData, setTableData] = useState(rawData)
-
   
   const [editing, setEditing] = useState(false)
   const [editID, setEditID] = useState(0)
   
   const dataFeilds = selectData.dataFeilds
+  const [filterState, setFilterState] = useState(() => {
+    var initFilterState = []
+    for(var i = 0; i < dataFeilds.length; i++){
+      initFilterState.push(false)
+    }
+    return initFilterState
+  })
+  
 
   const onSave = function(product){
     onAddServerData(product)
@@ -54,33 +61,67 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
   const onCancel = function(){
     setEditing(false)
   }
-
+  const updateFilterState = function(index){
+    var newFilterState = []
+    for(var i = 0; i < filterState.length; i++){
+      if(i != index){
+        newFilterState.push(filterState[i])
+      }
+      else{
+        newFilterState.push(!filterState[i])
+      }
+    }
+    setFilterState(newFilterState)
+  }
   useEffect(() => {
     onFilter()
-  },[name, onAddServerData, onUpdateServerData, onDeleteServerData])
+  },[name, producedTimeMin, producedTimeMax, filterState, onAddServerData, onUpdateServerData, onDeleteServerData])
 
   const onFilter = function(){
-    if(name.toLowerCase() === ''){
-      setTableData(rawData)
+    setTableData(rawData)
+    if(filterState[0]){
+      if(name.toLowerCase() === ''){
+        setTableData(rawData)
+      }
+      else{     
+        newData = []
+        rawData.map((item) =>{
+          if(item.name.toLowerCase().includes(name.toLowerCase())){
+            newData.push(item)
+          }
+        })
+        setTableData(newData)
+      }
     }
-    else{
-      let newData = []
-      rawData.map((item) =>{
-        if(item.name.toLowerCase().includes(name.toLowerCase())){
-          newData.push(item)
+    
+    if(filterState[8]){
+      var newData = []
+      var minDate = new Date(producedTimeMin)
+      var maxDate = new Date(producedTimeMax)
+
+      for(var i = 0; i < tableData.length; i++){
+        var currentDate = new Date(tableData[i].produced_time)
+        if(currentDate >= minDate && currentDate <= maxDate){
+          newData.push(tableData[i])
         }
-      })
+      }
       setTableData(newData)
     }
+    console.log(filterState)
   }
 
+  
 
   return (
     <>
       <table>
           <thead>
               <tr>
-                {dataFeilds.map((item, index) => (<th key={index}>{item}</th>))}
+                {dataFeilds.map((item, index) => (
+                            <th key={index}>
+                              <input type="checkbox" id={index} onChange={(e) => {updateFilterState(index)}}></input>
+                              {item}
+                            </th>))}
                   <th>Actions</th> 
               </tr>
               <DataFilter 
@@ -138,7 +179,6 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
               onCreate={onSave}
               onUpdate={onUpdate}
               selectData={selectData}
-              data={tableData[tableData.length - 1]}
               isCreate={true}
             ></DataEdit>
           </tbody>

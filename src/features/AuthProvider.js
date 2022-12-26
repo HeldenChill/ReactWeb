@@ -1,7 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
-
+export const DefaultProduct = {
+    id: -1,
+    name: "",
+    type: "Fan",
+    code: "",
+    error_times: 0,
+    price: 0,
+    status: "In Stock",
+    position: "",
+    produced_by: "",
+    produced_time: "",
+    sold_time: "",
+    customer_id: -1,
+  }
 export const ProductType = ["Fan" ,"TV" ,"Fridge", "Car"]
 export const ProductStatus = ["In Stock", "On Sale", "Under Warranty", "Error", "Sold", "Returned"]
 
@@ -66,7 +79,7 @@ const accounts =  [
     }
 ]
 
-let tableData = [
+let productData = [
       {
         id: 0,
         name: "Electric Fan",
@@ -77,7 +90,7 @@ let tableData = [
         status: "In Stock",
         position: "Producer1",
         produced_by: "Producer1",
-        produced_time: "22-11-2022",
+        produced_time: "2022-11-22",
         sold_time: "",
         customer_id: -1,
       },
@@ -91,7 +104,7 @@ let tableData = [
         status: "In Stock",
         position: "Producer1",
         produced_by: "Producer1",
-        produced_time: "22-11-2022",
+        produced_time: "2022-11-22",
         sold_time: "",
         customer_id: -1,
       },
@@ -105,7 +118,7 @@ let tableData = [
         status: "On Sale",
         position: "Seller1",
         produced_by: "Producer1",
-        produced_time: "22-11-2022",
+        produced_time: "2022-01-22",
         sold_time: "",
         customer_id: -1,
       },
@@ -120,7 +133,7 @@ let tableData = [
         status: "On Sale",
         position: "Seller1",
         produced_by: "Producer1",
-        produced_time: "22-11-2022",
+        produced_time: "2022-03-12",
         sold_time: "",
         customer_id: -1,
       },
@@ -135,7 +148,7 @@ let tableData = [
         status: "On Sale",
         position: "Seller1",
         produced_by: "Producer1",
-        produced_time: "22-11-2022",
+        produced_time: "2022-04-05",
         sold_time: "",
         customer_id: -1,
       },
@@ -150,7 +163,7 @@ let tableData = [
         status: "On Sale",
         position: "Seller1",
         produced_by: "Producer1",
-        produced_time: "22-11-2022",
+        produced_time: "2022-06-02",
         sold_time: "",
         customer_id: -1,
       },
@@ -165,7 +178,109 @@ let tableData = [
         status: "Under Warranty",
         position: "Insurance1",
         produced_by: "Producer1",
-        produced_time: "22-11-2022",
+        produced_time: "2022-11-22",
+        sold_time: "",
+        customer_id: -1,
+      },
+      {
+        id: 7,
+        name: "Electric Fan",
+        type: "Fan",
+        code: "EF001",
+        error_times: 0,
+        price: 10,
+        status: "In Stock",
+        position: "Producer1",
+        produced_by: "Producer1",
+        produced_time: "2022-10-22",
+        sold_time: "",
+        customer_id: -1,
+      },
+      {
+        id: 8,
+        name: "Ceilling Fan",
+        type: "Fan",
+        code: "EF002",
+        error_times: 0,
+        price: 10,
+        status: "In Stock",
+        position: "Producer1",
+        produced_by: "Producer1",
+        produced_time: "2022-08-22",
+        sold_time: "",
+        customer_id: -1,
+      },
+      {
+        id: 9,
+        name: "Flat Screen TV - 20inch",
+        type: "TV",
+        code: "ET001",
+        error_times: 0,
+        price: 10,
+        status: "On Sale",
+        position: "Seller1",
+        produced_by: "Producer1",
+        produced_time: "2022-12-22",
+        sold_time: "",
+        customer_id: -1,
+      },
+      
+      {
+        id: 10,
+        name: "Flat Screen TV - 42inch",
+        type: "TV",
+        code: "ET002",
+        error_times: 0,
+        price: 10,
+        status: "On Sale",
+        position: "Seller1",
+        produced_by: "Producer1",
+        produced_time: "2022-08-10",
+        sold_time: "",
+        customer_id: -1,
+      },
+  
+      {
+        id: 11,
+        name: "Flat Screen TV - 65inch",
+        type: "TV",
+        code: "ET003",
+        error_times: 0,
+        price: 10,
+        status: "On Sale",
+        position: "Seller1",
+        produced_by: "Producer1",
+        produced_time: "2022-11-11",
+        sold_time: "",
+        customer_id: -1,
+      },
+  
+      {
+        id: 12,
+        name: "Flat Screen TV - 80inch",
+        type: "TV",
+        code: "ET004",
+        error_times: 0,
+        price: 10,
+        status: "On Sale",
+        position: "Seller1",
+        produced_by: "Producer1",
+        produced_time: "2022-12-22",
+        sold_time: "",
+        customer_id: -1,
+      },
+  
+      {
+        id: 13,
+        name: "Save Energy Fridges",
+        type: "Fridge",
+        code: "EF001",
+        error_times: 0,
+        price: 10,
+        status: "Under Warranty",
+        position: "Insurance1",
+        produced_by: "Producer1",
+        produced_time: "2022-05-04",
         sold_time: "",
         customer_id: -1,
       },
@@ -189,7 +304,7 @@ let customerData = [
 
 const updateAccountData = function(state){
     if(state.accountType === AccountType.Admin){
-        state.data = tableData
+        state.data = productData
         state.dataFeilds = AccountDataFields.Admin
         state.statusFeild = AccountProductStatus.Admin
         state.positionFeild = [...AccountsPositions.Producer, ...AccountsPositions.Seller, ...AccountsPositions.Insurance]
@@ -197,7 +312,7 @@ const updateAccountData = function(state){
     }
     else if(state.accountType === AccountType.Producer){
         const newData = []
-        tableData.map((item) => {
+        productData.map((item) => {
             if(item.produced_by.toLocaleLowerCase().includes(state.accountPosition.toLowerCase())){
                 newData.push(item)
             }
@@ -210,7 +325,7 @@ const updateAccountData = function(state){
     }
     else if(state.accountType === AccountType.Seller){
         const newData = []
-        tableData.map((item) => {
+        productData.map((item) => {
             if(item.position.toLowerCase().includes(state.accountPosition.toLowerCase())){
                 newData.push(item)
             }
@@ -222,7 +337,7 @@ const updateAccountData = function(state){
     }
     else if(state.accountType === AccountType.Insurance){
         const newData = []
-        tableData.map((item) => {
+        productData.map((item) => {
             if(item.position.toLowerCase().includes(state.accountPosition.toLowerCase())){
                 newData.push(item)
             }
@@ -232,8 +347,7 @@ const updateAccountData = function(state){
         state.statusFeild = AccountProductStatus.Insurance
         state.positionByFeild = [...AccountsPositions.Insurance, ...AccountsPositions.Producer]
     }
-    state.lastID = tableData[tableData.length - 1].id
-    console.log(state.data)
+    state.lastID = productData[productData.length - 1].id
 }
 export const AuthProvider = createSlice({
     name: 'authProvider',
@@ -290,7 +404,7 @@ export const AuthProvider = createSlice({
         },
 
         addData: (state, data) => {
-            const newData = tableData.slice(0, tableData.length)
+            const newData = productData.slice(0, productData.length)
             const payload = data.payload
             const newDataProduct = {
                 id:state.lastID + 1,
@@ -306,14 +420,14 @@ export const AuthProvider = createSlice({
                 sold_time: payload.sold_time,
             }
             newData.push(newDataProduct)        
-            tableData = newData
+            productData = newData
             updateAccountData(state)
         },
 
         updateData: (state, data) => {
-            const newData = tableData.slice(0, tableData.length)
+            const newData = productData.slice(0, productData.length)
             const payload = data.payload
-            tableData.map((item,index) => {
+            productData.map((item,index) => {
                 if(item.id === payload.id){
                     newData[index] = {
                         id:payload.id,
@@ -331,19 +445,19 @@ export const AuthProvider = createSlice({
                     return
                 }
             })
-            tableData = newData
+            productData = newData
             updateAccountData(state)
         },
 
         deleteData: (state, data) => {
-            const newData = tableData.slice(0, tableData.length)
+            const newData = productData.slice(0, productData.length)
             for(var i = 0; i < newData.length; i++){
                 if(newData[i].id === data.payload){
                     newData.splice(i, 1)
                     break
                 }
             }
-            tableData = newData
+            productData = newData
             updateAccountData(state)
         }
     }
