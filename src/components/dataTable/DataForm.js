@@ -8,7 +8,7 @@ const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
     const [name, setName] = useState("")
     const [type, setType] = useState(ProductType[0])
     const [code, setCode] = useState("")
-    const [errorTime, setErrorTime] = useState(0)
+    const [errorTimes, setErrorTimes] = useState(0)
     const [price, setPrice] = useState(1)
     const [status, setStatus] = useState(ProductStatus[0])
     const [position, setPosition] = useState("")
@@ -27,7 +27,7 @@ const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
             setName(data.name)         
             setType(data.type)
             setCode(data.code)
-            setErrorTime(data.error_time)
+            setErrorTimes(data.error_times)
             setPrice(data.price)
             setStatus(data.status)
             setPosition(data.position)
@@ -49,7 +49,7 @@ const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
                 name:name, 
                 type:type, 
                 code:code, 
-                error_time:errorTime,
+                error_times:errorTimes,
                 price:price,
                 status:status, 
                 position:position,
@@ -64,7 +64,7 @@ const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
                 name:name, 
                 type:type, 
                 code:code, 
-                error_time:errorTime,
+                error_times:errorTimes,
                 price:price,
                 status:status, 
                 position:position,

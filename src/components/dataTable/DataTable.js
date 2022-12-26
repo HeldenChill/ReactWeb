@@ -4,37 +4,31 @@ import TableRow from './TableRow'
 import './DataTable.css'
 import DataForm from './DataForm'
 import { ProductStatus, ProductType } from '../../features/AuthProvider'
+import useAuthAccount from '../../hooks/useAuthAccount'
+import DataFilter from './DataFilter'
 
 const DataTable = ({rawData, onAddServerData, onUpdateServerData, onDeleteServerData}) => {
   console.log("Render DataTable")
   const [name, setName] = useState("")
-  const [status, setStatus] = useState(ProductStatus[0])
   const [type, setType] = useState(ProductType[0])
   const [code, setCode] = useState("")
+  const [errorTimes, setErrorTimes] = useState(0)
   const [price, setPrice] = useState(0)
+  const [status, setStatus] = useState(ProductStatus[0])
+  const [position, setPosition] = useState("")
+  const [producedBy, setProducedBy] = useState("")
+  const [producedTime, setProducedTime] = useState("")
+  const [soldTime, setSoldTime] = useState("")
+
   const [tableData, setTableData] = useState(rawData)
 
   
   const [editing, setEditing] = useState(false)
   const [editID, setEditID] = useState(0)
   
-
+  const dataFeilds = useAuthAccount().dataFeilds
   const onSave = function(product){
-    const newProduct = {
-      id: 0,
-      name:product.name, 
-      type:product.type, 
-      code:product.code, 
-      status:product.status, 
-      error_time:product.error_time,
-      price: product.price,
-      status: product.status,
-      position: product.position,
-      produced_by: product.produced_by,
-      produced_time: product.produced_time,
-      sold_time: product.sold_time,                  
-    }
-    onAddServerData(newProduct)
+    onAddServerData(product)
   }
 
   const onUpdate = function(product){   
@@ -75,9 +69,7 @@ const DataTable = ({rawData, onAddServerData, onUpdateServerData, onDeleteServer
     }
   }
 
-  const UpdateInput = function(e, setData){
-    setData(e.target.value)  
-  }
+
 
   const getData = function(id){
     for(var i = 0; i < tableData.length; i++){
@@ -90,59 +82,39 @@ const DataTable = ({rawData, onAddServerData, onUpdateServerData, onDeleteServer
 
   return (
     <>
-      <table style={{width: "95%",margin: "auto"}}>
+      <table>
           <thead>
               <tr>
-                  <th>Name</th>
-                  <th>Type</th>
-                  <th>Code</th>
-                  <th>Status</th>
-                  <th>Price</th>
-                  <th>Actions</th>
+                {dataFeilds.map((item, index) => (<th key={index}>{item}</th>))}
+                  <th>Actions</th> 
               </tr>
-              <tr style={{height: "2rem"}}>
-                <th>
-                  <div>
-                      <label htmlFor= "name"></label>
-                      <input type= "text" name="name" id="name" value={name} onChange={e => UpdateInput(e, setName)}/>
-                  </div>
-                </th>
-                <th>
-                  <div>
-                    <select id="type" name="type" value={type} onChange={e => UpdateInput(e, setType)}>
-                        {ProductType.map((item, index) => {
-                            return <option value={item} key = {index}> {item}</option>                           
-                        })}
-                    </select>
-                  </div>
-                </th>
-                <th>
-                  <div>
-                      <label htmlFor= "code"></label>
-                      <input type= "text" name="code" id="code" value={code} onChange={e => UpdateInput(e, setCode)}/>
-                  </div>
-                </th>                
-                <th>
-                  <div>
-                    <select id="status" name="type" value={status} onChange={e => UpdateInput(e, setStatus)}>
-                        {ProductStatus.map((item, index) => {
-                            return <option value={item} key={index}> {item}</option>                           
-                        })}
-                    </select>  
-                  </div> 
-                </th>
-                <th>
-                  <div>
-                  <label htmlFor="price"></label>
-                      <input type= "number" value={price} onChange ={e => UpdateInput(e, setPrice)}/>
-                  </div>  
-                </th>        
-                <th>
-                <button onClick={() => {
-                    onFilter({name, status, type, code, price})
-                }}>Filter All</button>
-                </th>       
-              </tr>
+              <DataFilter 
+              style = {{maxWidth: "100px"}}
+              prop={{
+                name:name,
+                type:type,
+                code:code,
+                errorTimes:errorTimes,
+                price:price,
+                status:status,
+                position:position,
+                producedBy:producedBy,
+                producedTime:producedTime,
+                soldTime:soldTime,
+              }}
+              setProp={{
+                setName:setName,
+                setType:setType,
+                setCode:setCode,
+                setErrorTimes:setErrorTimes,
+                setPrice:setPrice,
+                setStatus:setStatus,
+                setPosition:setPosition,
+                setProducedBy:setProducedBy,
+                setProducedTime:setProducedTime,
+                setSoldTime:setSoldTime
+              }}
+              ></DataFilter>
           </thead>
           <tbody>
             { 

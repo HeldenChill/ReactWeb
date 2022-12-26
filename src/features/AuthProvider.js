@@ -4,6 +4,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const ProductType = ["Fan" ,"TV" ,"Fridge", "Car"]
 export const ProductStatus = ["In Stock", "On Sale", "Under Warranty", "Error"]
+export const AccountDataFields = {
+    Admin: ["Name", "Type", "Code", "Error Times", "Price", "Status", "Position", "Produced By", "Produced Time", "Sold Time"],
+    Producer: ["Name", "Type", "Code", "Error Times", "Price", "Status", "Position", "Produced Time", "Sold Time"],
+    Seller: ["Name", "Type", "Code", "Price", "Status", "Produced Time", "Sold Time"],
+    Insurance: ["Name", "Type", "Code", "Error Times", "Status", "Produced By", "Produced Time"],
+    None: []
+}
 export const AccountType = {
     Admin: "Admin",
     Seller: "Seller",
@@ -48,38 +55,39 @@ let tableData = [
         name: "Electric Fan",
         type: "Fan",
         code: "EF001",
-        error_time: 0,
+        error_times: 0,
         price: 10,
         status: "In Stock",
         position: "Producer1",
         produced_by: "Producer1",
-        produced_time: 0,
+        produced_time: "22-11-2022",
+        sold_time: "",
       },
       {
         id: 1,
         name: "Ceilling Fan",
         type: "Fan",
         code: "EF002",
-        error_time: 0,
+        error_times: 0,
         price: 10,
         status: "In Stock",
         position: "Producer1",
         produced_by: "Producer1",
-        produced_time: 0,
-        sold_time: 0,
+        produced_time: "22-11-2022",
+        sold_time: "",
       },
       {
         id: 2,
         name: "Flat Screen TV - 20inch",
         type: "TV",
         code: "ET001",
-        error_time: 0,
+        error_times: 0,
         price: 10,
         status: "On Sale",
         position: "Seller1",
         produced_by: "Producer1",
-        produced_time: 0,
-        sold_time: 0,
+        produced_time: "22-11-2022",
+        sold_time: "",
       },
       
       {
@@ -87,13 +95,13 @@ let tableData = [
         name: "Flat Screen TV - 42inch",
         type: "TV",
         code: "ET002",
-        error_time: 0,
+        error_times: 0,
         price: 10,
         status: "On Sale",
         position: "Seller1",
         produced_by: "Producer1",
-        produced_time: 0,
-        sold_time: 0,
+        produced_time: "22-11-2022",
+        sold_time: "",
       },
   
       {
@@ -101,13 +109,13 @@ let tableData = [
         name: "Flat Screen TV - 65inch",
         type: "TV",
         code: "ET003",
-        error_time: 0,
+        error_times: 0,
         price: 10,
         status: "On Sale",
         position: "Seller1",
         produced_by: "Producer1",
-        produced_time: 0,
-        sold_time: 0,
+        produced_time: "22-11-2022",
+        sold_time: "",
       },
   
       {
@@ -115,13 +123,13 @@ let tableData = [
         name: "Flat Screen TV - 80inch",
         type: "TV",
         code: "ET004",
-        error_time: 0,
+        error_times: 0,
         price: 10,
         status: "On Sale",
         position: "Seller1",
         produced_by: "Producer1",
-        produced_time: 0,
-        sold_time: 0,
+        produced_time: "22-11-2022",
+        sold_time: "",
       },
   
       {
@@ -129,26 +137,50 @@ let tableData = [
         name: "Save Energy Fridges",
         type: "Fridge",
         code: "EF001",
-        error_time: 0,
+        error_times: 0,
         price: 10,
         status: "Under Warranty",
         position: "Insurance1",
         produced_by: "Producer1",
-        produced_time: 0,
-        sold_time: 0,
+        produced_time: "22-11-2022",
+        sold_time: "",
       },
   ]
 
 const updateTableData = function(state){
     if(state.accountType === AccountType.Admin){
         state.data = tableData
+        state.dataFeilds = AccountDataFields.Admin
     }
-    else if(state.accountType === AccountType.Seller){
+    else if(state.accountType === AccountType.Producer){
+        const newData = []
         tableData.map((item) => {
-            if(item.position.toLowerCase().includes("seller")){
-                state.data.push(item)
+            if(item.produced_by.toLocaleLowerCase().includes(state.accountPosition.toLowerCase())){
+                newData.push(item)
             }
         })
+        state.data = newData
+        state.dataFeilds = AccountDataFields.Producer
+    }
+    else if(state.accountType === AccountType.Seller){
+        const newData = []
+        tableData.map((item) => {
+            if(item.position.toLowerCase().includes(state.accountPosition.toLowerCase())){
+                newData.push(item)
+            }
+        })
+        state.data = newData
+        state.dataFeilds = AccountDataFields.Seller
+    }
+    else if(state.accountType === AccountType.Insurance){
+        const newData = []
+        tableData.map((item) => {
+            if(item.position.toLowerCase().includes(state.accountPosition.toLowerCase())){
+                newData.push(item)
+            }
+        })
+        state.data = newData
+        state.dataFeilds = AccountDataFields.Insurance
     }
     state.lastID = tableData[tableData.length - 1].id
 }
@@ -158,6 +190,8 @@ export const AuthProvider = createSlice({
         isCorrect: false,
         isInAccount: false,
         accountType: AccountType.None,
+        accountPosition: "",
+        dataFeilds: [],
         data : [],
         lastID : 0,
     },
@@ -172,8 +206,9 @@ export const AuthProvider = createSlice({
                         state.isCorrect = true
                         state.isInAccount = true
                         state.accountType = account.type
+                        state.accountPosition = account.position
                         updateTableData(state)                     
-
+                        console.log(state.data)
                         return {
                             ...state,
                             data: {
@@ -192,6 +227,8 @@ export const AuthProvider = createSlice({
             state.isCorrect = false
             state.isInAccount = false
             state.accountType = AccountType.None
+            state.accountPosition = ""
+            state.dataFeilds = AccountDataFields.None
             state.data = []
         },
 
@@ -203,7 +240,7 @@ export const AuthProvider = createSlice({
                 name:payload.name,
                 type:payload.type,
                 code:payload.code,
-                error_time:payload.error_time,
+                error_times:payload.error_times,
                 price: payload.price,
                 status: payload.status,
                 position: payload.position,
@@ -226,7 +263,7 @@ export const AuthProvider = createSlice({
                         name:payload.name,
                         type:payload.type,
                         code:payload.code,
-                        error_time:payload.error_time,
+                        error_times:payload.error_times,
                         price: payload.price,
                         status: payload.status,
                         position: payload.position,

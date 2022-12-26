@@ -5,13 +5,14 @@
 }
 
 table{
-    width: 100%;
+    width: 95%;
+    margin: auto;
 }
 
 table th,
 table td{
     border-bottom: 2px solid #dcdcdc;
-    padding: 10px 8px;
+    padding: 6px 8px;
     text-align: center;
 }
 
