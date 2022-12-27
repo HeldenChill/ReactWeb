@@ -1,36 +1,43 @@
 import "./DataForm.css"
 import { ProductType } from "../../features/AuthProvider"
 import { useState } from "react"
-import useAuthAccount from "../../hooks/useAuthAccount"
+import useIsType from "../../hooks/useIsType"
 import { AccountType } from "../../features/AuthProvider"
 import { DefaultProduct } from "../../features/AuthProvider"
 
-const DataEdit = ({onCreate, onUpdate, onCancel, selectData, isCreate=false}) => {
-   
-    const [id, setID] = useState(DefaultProduct.id)
-    const [name, setName] = useState(DefaultProduct.name)
-    const [type, setType] = useState(DefaultProduct.type)
-    const [code, setCode] = useState(DefaultProduct.code)
-    const [errorTimes, setErrorTimes] = useState(DefaultProduct.error_times)
-    const [price, setPrice] = useState(DefaultProduct.price)
-    const [status, setStatus] = useState(DefaultProduct.status)
-    const [position, setPosition] = useState(DefaultProduct.position)
-    const [producedBy, setProducedBy] = useState(DefaultProduct.produced_by)
-    const [producedTime, setProducedTime] = useState(DefaultProduct.produced_time)
-    const [soldTime, setSoldTime] = useState(DefaultProduct.sold_time)
-    const [customerId, setCustomerId] = useState(DefaultProduct.customer_id)
-    
+const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false}) => {
+    var InitProduct
+    InitProduct = isCreate ?  DefaultProduct : data
+
     const dataFeilds = selectData.dataFeilds
     const positionFeild = selectData.positionFeild
     const productStatus = selectData.productStatus
     const producedByFeild = selectData.producedByFeild
+    const accountPosition = selectData.accountPosition
 
-    const accountType = useAuthAccount().accountType
-    const isSeller = accountType === AccountType.Seller ? true : false
-    const isInsurance = accountType === AccountType.Insurance ? true : false
-    const isProducer = accountType === AccountType.Producer ? true : false
-    const isAdmin = accountType === AccountType.Admin ? true : false
+    if(isCreate){
+        InitProduct.position = positionFeild[0]
+        InitProduct.producedBy = accountPosition
+    }
+    
 
+    const [id, setID] = useState(InitProduct.id)
+    const [name, setName] = useState(InitProduct.name)
+    const [type, setType] = useState(InitProduct.type)
+    const [code, setCode] = useState(InitProduct.code)
+    const [errorTimes, setErrorTimes] = useState(InitProduct.error_times)
+    const [price, setPrice] = useState(InitProduct.price)
+    const [status, setStatus] = useState(InitProduct.status)
+    const [position, setPosition] = useState(InitProduct.position)
+    const [producedBy, setProducedBy] = useState(InitProduct.produced_by)
+    const [producedTime, setProducedTime] = useState(InitProduct.produced_time)
+    const [soldTime, setSoldTime] = useState(InitProduct.sold_time)
+    const [customerId, setCustomerId] = useState(InitProduct.customer_id)
+    
+    
+
+    const isSeller = useIsType(AccountType.Seller)
+    const isInsurance = useIsType(AccountType.Insurance)
     const [error, setError] = useState(false)
 
     const onSubmit = function(e){
@@ -122,7 +129,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, selectData, isCreate=false}) =>
             case "Position":
                 return  <td key={key} className="edit-td">
                             <div>
-                                <select className="filter-input" id="status" name="status" value={position} onChange={e => UpdateInput(e, setPosition)}>
+                                <select className="filter-input" id="position" name="position" value={position} onChange={e => UpdateInput(e, setPosition)}>
                                     {positionFeild.map((item, index) => {
                                         return <option value={item} key={index}> {item}</option>                           
                                     })}
@@ -132,7 +139,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, selectData, isCreate=false}) =>
             case "Produced By":
                 return  <td key={key} className="edit-td">
                             <div>
-                                <select className="filter-input" id="status" name="status" value={producedBy} onChange={e => UpdateInput(e, setProducedBy)}>
+                                <select disabled={isSeller||isInsurance} className="filter-input" id="status" name="status" value={producedBy} onChange={e => UpdateInput(e, setProducedBy)}>
                                     {producedByFeild.map((item, index) => {
                                         return <option value={item} key={index}> {item}</option>                           
                                     })}
@@ -145,7 +152,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, selectData, isCreate=false}) =>
                         </td>
             case "Sold Time":
                 return <td key={key} className="edit-td">
-                            <input style={{maxWidth: "90%"}} type= "date" name="sold_time" id="sold_time" value={soldTime} onChange={e => UpdateInput(e, setSoldTime)}/>                              
+                            <input disabled={!isSeller} style={{maxWidth: "90%"}} type= "date" name="sold_time" id="sold_time" value={soldTime} onChange={e => UpdateInput(e, setSoldTime)}/>                              
                         </td>
         }
     }

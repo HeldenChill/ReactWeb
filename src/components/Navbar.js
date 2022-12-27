@@ -42,23 +42,28 @@ const Navbar = () => {
                   <Link to ='/home' className='nav-links' onClick={closeMobileMenu}>
                     Home
                   </Link>
-                </li>
-                <li className='nav-item'>
-                  <Link to ='/services' className='nav-links' onClick={closeMobileMenu}>
-                    Services
-                  </Link>
-                </li>
-                <li className='nav-item'>
-                  <Link to ='/products' className='nav-links' onClick={closeMobileMenu}>
-                    Products
-                  </Link>
-                </li>
+                </li>                           
+                {accountState.isInAccount === true 
+                ? <li className='nav-item'>
+                    <Link to ='/products' className='nav-links' onClick={closeMobileMenu}>
+                      Products
+                    </Link>
+                  </li> : null
+                }                
                 {accountState.accountType === AccountType.Admin 
                 ? <li className='nav-item'>
                     <Link to ='/accounts' className='nav-links' onClick={closeMobileMenu}>
                       Accounts
                     </Link>
-                  </li> : null}
+                  </li> : null
+                }
+                {accountState.accountType === AccountType.Seller
+                ? <li className='nav-item'>
+                    <Link to ='/services' className='nav-links' onClick={closeMobileMenu}>
+                      Services
+                    </Link>
+                  </li> : null
+                }   
                 <div className='nav-button'>
                   <Button 
                     link='/sign-in' 

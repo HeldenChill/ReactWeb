@@ -1,38 +1,25 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import TableRow from './TableRow'
-import './DataTable.css'
-import DataForm from './DataForm'
-import { AccountType, ProductStatus, ProductType, AccountsPositions } from '../../features/AuthProvider'
+import TableRow from '../TableRow'
+import '../DataTable.css'
 import DataFilter from './DataFilter'
 import DataEdit from './DataEdit'
-import useIsType from '../../hooks/useIsType'
 
 const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, onDeleteServerData}) => {
   console.log("Render DataTable")
+ 
+  const GENDER = ["Male", "Female"]
 
-  const positionFeild = [ ...AccountsPositions.Producer, ...AccountsPositions.Insurance, ...AccountsPositions.Seller]
-  const producedByFeild = AccountsPositions.Producer
+  const [id, setID] = useState(0)
   const [name, setName] = useState("")
-  const [type, setType] = useState(ProductType[0])
-  const [code, setCode] = useState("")
-  const [errorTimesMin, setErrorTimesMin] = useState(0)
-  const [errorTimesMax, setErrorTimesMax] = useState(0)
-  const [priceMin, setPriceMin] = useState(0)
-  const [priceMax, setPriceMax] = useState(0)
-  const [status, setStatus] = useState(ProductStatus[0])
-  const [position, setPosition] = useState(positionFeild[0])
-  const [producedBy, setProducedBy] = useState(producedByFeild[0])
-  const [producedTimeMin, setProducedTimeMin] = useState("2022-01-01")
-  const [producedTimeMax, setProducedTimeMax] = useState("2022-01-01")
-  const [soldTimeMin, setSoldTimeMin] = useState("2022-01-01")
-  const [soldTimeMax, setSoldTimeMax] = useState("2022-01-01")
-  const [customerID, setCustomerID] = useState(-1)
+  const [minAge, setMinAge] = useState(0)
+  const [maxAge, setMaxAge] = useState(0)
+  const [gender, setGender] = useState(GENDER[0])
+  const [address, setAddress] = useState("")
+  const [telephone, setTelephone] = useState("")
 
   const [tableData, setTableData] = useState(rawData)
   
-  const [editing, setEditing] = useState(false)
-  const [editID, setEditID] = useState(0)
   const dataFeilds = selectData.dataFeilds
   const [filterState, setFilterState] = useState(() => {
     var initFilterState = {}
@@ -50,17 +37,11 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
   const onUpdate = function(product){   
     // onSaveServerData({newData})
     onUpdateServerData(product)
-    setEditing(false)
-    setEditID(0)
   }
   const onDelete = function(id){
     onDeleteServerData(id)  
   }
 
-  const onEdit = function(id){
-    setEditID(id)
-    setEditing(true)    
-  }
 
   const updateFilterState = function(itemName){
     var newFilterState = {}
@@ -76,10 +57,7 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
   }
   useEffect(() => {
     onFilter()
-  },[name, type, code, errorTimesMin, errorTimesMax, 
-    priceMin, priceMax, status, position, producedBy,
-    producedTimeMin, producedTimeMax, soldTimeMin, 
-    soldTimeMax, customerID, filterState,
+  },[id, name, minAge, maxAge, gender, address, telephone, filterState,
     onAddServerData, onUpdateServerData, onDeleteServerData])
 
   const onFilter = function(){
@@ -201,17 +179,13 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
     setTableData(lastData)
   }
 
-  const isAdmin = useIsType(AccountType.Admin)
-  const isProducer = useIsType(AccountType.Producer)
   //#region JFX
-  var addDataForm
-  addDataForm = isAdmin || isProducer ?
-                <DataEdit
-                onCreate={onSave}
-                onUpdate={onUpdate}
-                selectData={selectData}
-                isCreate={true}
-              ></DataEdit>  : null
+  var addDataForm =<DataEdit
+                        onCreate={onSave}
+                        onUpdate={onUpdate}
+                        selectData={selectData}
+                        isCreate={true}
+                    ></DataEdit>
   //#endregion
   
 
@@ -230,43 +204,26 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
               <DataFilter 
               style = {{maxWidth: "100px"}}
               prop={{
+                id: id,
                 name:name,
-                type:type,
-                code:code,
-                errorTimesMin:errorTimesMin,
-                errorTimesMax:errorTimesMax,
-                priceMin:priceMin,
-                priceMax:priceMax,
-                status:status,
-                position:position,
-                producedBy:producedBy,
-                producedTimeMin:producedTimeMin,
-                producedTimeMax:producedTimeMax,
-                soldTimeMin:soldTimeMin,
-                soldTimeMax:soldTimeMax,
-                customerID:customerID,
+                minAge:minAge,
+                maxAge:maxAge,
+                gender:gender,
+                address:address,
+                telephone:telephone,
               }}
-              setProp={{
+              setProp={{ 
+                setID:setID,
                 setName:setName,
-                setType:setType,
-                setCode:setCode,
-                setErrorTimesMin:setErrorTimesMin,
-                setErrorTimesMax:setErrorTimesMax,
-                setPriceMin:setPriceMin,
-                setPriceMax:setPriceMax,
-                setStatus:setStatus,
-                setPosition:setPosition,
-                setProducedBy:setProducedBy,
-                setProducedTimeMin:setProducedTimeMin,
-                setProducedTimeMax:setProducedTimeMax,
-                setSoldTimeMin:setSoldTimeMin,
-                setSoldTimeMax:setSoldTimeMax,
-                setCustomerID:setCustomerID,
+                setMinAge:setMinAge,
+                setMaxAge:setMaxAge,
+                setGender:setGender,
+                setAddress:setAddress,
+                setTelephone:setTelephone,
               }}
               dataFeilds = {dataFeilds}
+              genderFeild = {GENDER}
               total = {tableData.length}
-              positionFeild = {positionFeild}
-              producedByFeild = {producedByFeild}
               ></DataFilter>
           </thead>
           <tbody>

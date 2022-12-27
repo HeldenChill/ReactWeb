@@ -1,8 +1,10 @@
 import "./DataForm.css"
-import { ProductType, ProductStatus } from "../../features/AuthProvider"
+import { ProductType, ProductStatus,AccountsPositions } from "../../features/AuthProvider"
 import useAuthAccount from "../../hooks/useAuthAccount"
 
-const DataFilter = ({prop,setProp,dataFeilds}) => {
+const DataFilter = ({prop,setProp,dataFeilds,positionFeild,producedByFeild,total}) => {
+
+    
     const UpdateInput = function(e, setData){
         setData(e.target.value)  
     }
@@ -36,10 +38,10 @@ const DataFilter = ({prop,setProp,dataFeilds}) => {
                 return  <th key={key} className="filter-th">
                             <div style={{display: "flex"}}>
                                 <div style={{paddingRight: "1px",maxWidth:"40%",margin:"auto"}}>
-                                    <input style={{maxWidth: "100%"}} type= "text" name="error_times" id="error_times" value={prop.errorTimes} onChange={e => UpdateInput(e, setProp.setErrorTimes)}/>                              
+                                    <input style={{maxWidth: "100%"}} type= "text" name="error_times" id="error_times" value={prop.errorTimesMin} onChange={e => UpdateInput(e, setProp.setErrorTimesMin)}/>                              
                                 </div>
                                 <div style={{paddingLeft: "1px",maxWidth:"40%",margin:"auto"}}>
-                                    <input style={{maxWidth: "100%"}} type= "text" name="error_times" id="error_times" value={prop.errorTimes} onChange={e => UpdateInput(e, setProp.setErrorTimes)}/>
+                                    <input style={{maxWidth: "100%"}} type= "text" name="error_times" id="error_times" value={prop.errorTimesMax} onChange={e => UpdateInput(e, setProp.setErrorTimesMax)}/>
                                 </div>
                             </div>
                         </th> 
@@ -65,18 +67,24 @@ const DataFilter = ({prop,setProp,dataFeilds}) => {
                             </div> 
                         </th>
             case "Position":
-                return  <th key={key} className="filter-th">
+                return  <td key={key} className="filter-th">
                             <div>
-                                <label htmlFor= "position"></label>
-                                <input className="filter-input" type= "text" name="position" id="position" value={prop.position} onChange={e => UpdateInput(e, setProp.setPosition)}/>
-                            </div>
-                        </th>
+                                <select className="filter-input" id="position" name="position" value={prop.position} onChange={e => UpdateInput(e, setProp.setPosition)}>
+                                    {positionFeild.map((item, index) => {
+                                        return <option value={item} key={index}> {item}</option>                           
+                                    })}
+                                </select>  
+                            </div> 
+                        </td>
             case "Produced By":
                 return  <th key={key} className="filter-th">
                             <div>
-                                <label htmlFor= "produced_by"></label>
-                                <input className="filter-input" type= "text" name="produced_by" id="produced_by" value={prop.producedBy} onChange={e => UpdateInput(e, setProp.setProducedBy)}/>
-                            </div>
+                                <select className="filter-input" id="producedBy" name="producedBy" value={prop.producedBy} onChange={e => UpdateInput(e, setProp.setProducedBy)}>
+                                    {producedByFeild.map((item, index) => {
+                                        return <option value={item} key={index}> {item}</option>                           
+                                    })}
+                                </select>  
+                            </div> 
                         </th>
             case "Produced Time":
                 return <th key={key} className="filter-th">
@@ -104,7 +112,7 @@ const DataFilter = ({prop,setProp,dataFeilds}) => {
 
                 {dataFeilds.map((item, index) => createDataFeild(item, index))  }     
                 <th>
-                <button>Filter All</button>
+                    <label style={{color: "#6262c8"}}>{`Sum = ${total}`}</label>
                 </th>       
             </tr>
     )

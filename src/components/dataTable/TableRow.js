@@ -8,6 +8,7 @@ const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, id}) => {
     const dataFeilds = selectData.dataFeilds
     const productStatus = selectData.productStatus
 
+    ["Id", "Name" , "Age", "Gender", "Address", "Telephone"]
     const createDataFeild = function(name, key){
         switch(name){
             case "Name":
@@ -30,6 +31,14 @@ const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, id}) => {
                 return <td key={key}>{rowData.produced_time}</td>
             case "Sold Time":
                 return <td key={key}>{rowData.sold_time}</td>
+            case "Age":
+                return <td key={key}>{rowData.age}</td>
+            case "Gender":
+                return <td key={key}>{rowData.gender}</td>
+            case "Address":
+                return <td key={key}>{rowData.address}</td>
+            case "Telephone":
+                return <td key={key}>{rowData.telephone}</td>
         }
     }
 

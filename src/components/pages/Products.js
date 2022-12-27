@@ -29,10 +29,6 @@ const Products = () => {
     setData(accountState.data)
   },[addServerData, updateServerData, deleteServerData])
   
-  const saveServerData = function({newData}){
-    setData(newData)
-  }
-  
   return (
     <>
       <DataTable 
@@ -42,10 +38,10 @@ const Products = () => {
             dataFeilds:accountState.dataFeilds,
             productStatus: accountState.statusFeild,
             positionFeild: accountState.positionFeild,
-            producedByFeild: accountState.producedByFeild
+            producedByFeild: accountState.producedByFeild,
+            accountPosition: accountState.accountPosition
           }
         }
-        onSaveServerData = {saveServerData}
         onAddServerData = {addServerData}
         onUpdateServerData = {updateServerData}
         onDeleteServerData = {deleteServerData}

@@ -18,7 +18,6 @@ export default function App() {
           {/* Public link */}
           <Route path='home' element = {<Home />} />
           <Route path='sign-in' element = {<SignIn />} />
-          <Route path='sign-up' element = {<SignUp />} />
 
           {/* Protected link */}
           <Route element={<RequireAuth />}>

@@ -1,6 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
+export const DefaultPerson = {
+    id: -1,
+    name: "",
+    age: 0,
+    gender: "Male",
+    address: "",
+    telephone: "",
+    buy_products: []
+}
 export const DefaultProduct = {
     id: -1,
     name: "",
@@ -10,23 +18,23 @@ export const DefaultProduct = {
     price: 0,
     status: "In Stock",
     position: "",
-    produced_by: "",
+    produced_by: "Producer1",
     produced_time: "",
     sold_time: "",
     customer_id: -1,
   }
 export const ProductType = ["Fan" ,"TV" ,"Fridge", "Car"]
 export const ProductStatus = ["In Stock", "On Sale", "Under Warranty", "Error", "Sold", "Returned"]
+export const DataFeilds = ["Name", "Type", "Code", "Error Times", "Price", "Status", "Position", "Produced By", "Produced Time", "Sold Time", "Customer ID"]
 
-export const AccountDataFields = {
+const AccountDataFields = {
     Admin: ["Name", "Type", "Code", "Error Times", "Price", "Status", "Position", "Produced By", "Produced Time", "Sold Time"],
-    Producer: ["Name", "Type", "Code", "Error Times", "Status", "Position", "Produced Time", "Sold Time"],
-    Seller: ["Name", "Type", "Code", "Price", "Status", "Produced Time", "Sold Time"],
-    Insurance: ["Name", "Type", "Code", "Error Times", "Status", "Produced By", "Produced Time"],
+    Producer: ["Name", "Type", "Code", "Status", "Position", "Produced Time", "Sold Time"],
+    Seller: ["Name", "Type", "Code", "Price", "Status", "Position", "Sold Time"],
+    Insurance: ["Name", "Type", "Code", "Error Times", "Status", "Position","Produced By", "Produced Time"],
     None: []
 }
-
-export const AccountProductStatus = {
+const AccountProductStatus = {
     Admin: ["In Stock", "On Sale", "Under Warranty", "Error", "Sold", "Returned"],
     Producer: ["In Stock", "On Sale"],
     Seller: ["On Sale", "Under Warranty", "Sold", "Returned"],
@@ -41,14 +49,14 @@ export const AccountType = {
     None: "None"
 
 }
-
+export const CustomerDataFeilds = ["Id", "Name" , "Age", "Gender", "Address", "Telephone"]
 export const AccountsPositions = {
     Admin: [],
     Producer: ["Producer1","Producer2"],
     Seller: ["Seller1", "Seller2", "Seller3", "Seller4"],
-    Insurance: ["Insurance1","Insurance2"]
-
+    Insurance: ["Insurance1","Insurance2"],
 }
+
 const accounts =  [
     {
         username: 'admin',
@@ -293,7 +301,7 @@ let customerData = [
         gender: "Male",
         address: "Hanoi",
         telephone: "0324678273",
-        buy_product: [
+        buy_products: [
                 {
                     id: 1,
                     store: "Seller1",
@@ -334,6 +342,7 @@ const updateAccountData = function(state){
         state.dataFeilds = AccountDataFields.Seller
         state.statusFeild = AccountProductStatus.Seller
         state.positionFeild = [...AccountsPositions.Seller, ...AccountsPositions.Insurance]
+        state.customerData = customerData
     }
     else if(state.accountType === AccountType.Insurance){
         const newData = []
@@ -346,6 +355,8 @@ const updateAccountData = function(state){
         state.dataFeilds = AccountDataFields.Insurance
         state.statusFeild = AccountProductStatus.Insurance
         state.positionByFeild = [...AccountsPositions.Insurance, ...AccountsPositions.Producer]
+        state.producedByFeild = AccountsPositions.Producer
+        state.positionFeild = [ ...AccountsPositions.Producer, ...AccountsPositions.Seller,...AccountsPositions.Insurance]
     }
     state.lastID = productData[productData.length - 1].id
 }
@@ -361,6 +372,7 @@ export const AuthProvider = createSlice({
         positionFeild: [],
         producedByFeild: [],
         data : [],
+        customerData: [],
         lastID : 0,
     },
     reducers: {
@@ -400,6 +412,7 @@ export const AuthProvider = createSlice({
             state.statusFeild = []
             state.positionFeild = []
             state.producedByFeild = []
+            state.customerData = []
             state.data = []
         },
 
