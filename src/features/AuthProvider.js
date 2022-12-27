@@ -7,7 +7,8 @@ export const DefaultPerson = {
     gender: "Male",
     address: "",
     telephone: "",
-    buy_products: []
+    buy_products: [],
+    stores: [],
 }
 export const DefaultProduct = {
     id: -1,
@@ -301,12 +302,8 @@ let customerData = [
         gender: "Male",
         address: "Hanoi",
         telephone: "0324678273",
-        buy_products: [
-                {
-                    id: 1,
-                    store: "Seller1",
-                }
-            ]
+        buy_products: [1],
+        stores: ["Seller1"]
     }
 ]
 
@@ -433,11 +430,12 @@ export const AuthProvider = createSlice({
                 sold_time: payload.sold_time,
             }
             newData.push(newDataProduct)        
-            productData = newData
+            productData = newData     
+            console.log("ADD PRODUCT")               
             updateAccountData(state)
         },
 
-        updateData: (state, data) => {
+        updateData: (state, data) => {        
             const newData = productData.slice(0, productData.length)
             const payload = data.payload
             productData.map((item,index) => {
@@ -458,7 +456,7 @@ export const AuthProvider = createSlice({
                     return
                 }
             })
-            productData = newData
+            productData = newData               
             updateAccountData(state)
         },
 
@@ -472,11 +470,62 @@ export const AuthProvider = createSlice({
             }
             productData = newData
             updateAccountData(state)
-        }
+        },
+        addCustomerData: (state,data) => {
+            const newData = customerData.slice(0, customerData.length)
+            const payload = data.payload
+            const newDataProduct = {
+                id:customerData[customerData.length - 1].id + 1,
+                name:payload.name,
+                age: payload.age,
+                gender: payload.gender,
+                address: payload.address,
+                telephone: payload.telephone,
+                buy_products: payload.products,
+                stores: payload.stores
+            }
+            newData.push(newDataProduct)        
+            customerData = newData
+            console.log("ADD CUSTOMER")
+            updateAccountData(state)
+        },
+        updateCustomerData: (state, data) => {
+            const newData = customerData.slice(0, customerData.length)
+            const payload = data.payload
+            customerData.map((item,index) => {
+                if(item.id === payload.id){
+                    newData[index] = {
+                        id:payload.id,
+                        name:payload.name,
+                        age: payload.age,
+                        gender: payload.gender,
+                        address: payload.address,
+                        telephone: payload.telephone,
+                        buy_products: payload.products,
+                        stores: payload.stores
+                    }
+                    return
+                }
+            })
+            customerData = newData
+            updateAccountData(state)
+        },
+        deleteCustomerData: (state, data) => {
+            const newData = customerData.slice(0, customerData.length)
+            for(var i = 0; i < newData.length; i++){
+                if(newData[i].id === data.payload){
+                    newData.splice(i, 1)
+                    break
+                }
+            }
+            customerData = newData
+            updateAccountData(state)
+        }        
     }
 
 })
 
-export const { checkValidAccount, logoutAccount, updateData, addData, deleteData} = AuthProvider.actions;
+export const { checkValidAccount, logoutAccount, updateData, addData, deleteData,
+                addCustomerData, updateCustomerData, deleteCustomerData} = AuthProvider.actions;
 export default AuthProvider.reducer;
 export const selectorAuthProvider = (state) => state.authProvider;

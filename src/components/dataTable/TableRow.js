@@ -6,11 +6,11 @@ import './DataTable.css';
 const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, id}) => {
     const [update,setUpdate] = useState(false)
     const dataFeilds = selectData.dataFeilds
-    const productStatus = selectData.productStatus
-
-    ["Id", "Name" , "Age", "Gender", "Address", "Telephone"]
+    // const productStatus = selectData.productStatus
     const createDataFeild = function(name, key){
         switch(name){
+            case "Id":
+                return <td key={key}>{rowData.id}</td>
             case "Name":
                 return <td key={key}>{rowData.name}</td>
             case "Type":

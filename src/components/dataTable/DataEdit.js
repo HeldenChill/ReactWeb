@@ -38,6 +38,8 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
 
     const isSeller = useIsType(AccountType.Seller)
     const isInsurance = useIsType(AccountType.Insurance)
+    const isAdmin = useIsType(AccountType.Admin)
+    const isProducer = useIsType(AccountType.Producer)
     const [error, setError] = useState(false)
 
     const onSubmit = function(e){
@@ -60,6 +62,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
                 sold_time:soldTime,
                 customerId:customerId,
             })
+            onCancel()
         }
         else{
             onCreate({
@@ -76,8 +79,9 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
                 sold_time:soldTime,
                 customerId:customerId,
             })
+            
         }
-        onCancel()
+        
     }
     const UpdateInput = function(e, setData){
         setData(e.target.value)  
@@ -152,7 +156,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
                         </td>
             case "Sold Time":
                 return <td key={key} className="edit-td">
-                            <input disabled={!isSeller} style={{maxWidth: "90%"}} type= "date" name="sold_time" id="sold_time" value={soldTime} onChange={e => UpdateInput(e, setSoldTime)}/>                              
+                            <input disabled={isProducer || isInsurance} style={{maxWidth: "90%"}} type= "date" name="sold_time" id="sold_time" value={soldTime} onChange={e => UpdateInput(e, setSoldTime)}/>                              
                         </td>
         }
     }

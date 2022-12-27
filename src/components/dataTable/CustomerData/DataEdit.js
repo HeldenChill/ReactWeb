@@ -1,5 +1,4 @@
-import "./DataForm.css"
-import { ProductType } from "../../features/AuthProvider"
+import "../DataForm.css"
 import { useState } from "react"
 import { DefaultPerson } from "../../../features/AuthProvider"
 
@@ -21,9 +20,10 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
     const [address, setAddress] = useState(InitPerson.address)
     const [telephone, setTelephone] = useState(InitPerson.telephone)
 
+    const [error, setError] = useState(false)
     const onSubmit = function(e){
         e.preventDefault()
-        if(name === "" || code ===""){
+        if(name === "" || gender ===""){
             setError(true)
         }
         else if(!isCreate){
@@ -34,8 +34,10 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
                 gender: gender,
                 address: address,
                 telephone: telephone,
-                buy_products : []
+                buy_products : [],
+                stores: [],
             })
+            onCancel()
         }
         else{
             onCreate({
@@ -45,16 +47,22 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
                 gender: gender,
                 address: address,
                 telephone: telephone,
-                buy_products: InitPerson.buy_products
+                buy_products: InitPerson.buy_products,
+                stores: InitPerson.stores,
             })
+            
         }
-        onCancel()
+        
     }
     const UpdateInput = function(e, setData){
         setData(e.target.value)  
     }
     const createDataFeild = function(feildName, key){
         switch(feildName){
+            case "Id":
+                return  <td key={key} className="edit-td">
+                            <input disabled={true} style={{maxWidth: "80%"}} type= "text" name="age" id="age" value={id} onChange={e => UpdateInput(e, setID)}/>                              
+                        </td> 
             case "Name":
                 return  <td key={key} className="edit-td">
                             <div>
@@ -65,7 +73,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
             case "Gender":
                 return  <td key={key} className="edit-td">
                             <div>
-                            <select className="filter-input" id="type" name="type" value={type} onChange={e => UpdateInput(e, setGender)}>
+                            <select className="filter-input" id="type" name="type" value={gender} onChange={e => UpdateInput(e, setGender)}>
                                 {genderFeild.map((item, index) => {
                                     return <option value={item} key = {index}> {item}</option>                           
                                 })}

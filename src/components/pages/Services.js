@@ -3,7 +3,7 @@ import { useState } from 'react'
 import '../../App.css'
 import useAuthAccount from '../../hooks/useAuthAccount'
 import DataTable from '../dataTable/CustomerData/DataTable'
-import { addData,CustomerDataFeilds,deleteData,updateData } from '../../features/AuthProvider'
+import { addCustomerData,CustomerDataFeilds,deleteCustomerData,updateCustomerData } from '../../features/AuthProvider'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 
@@ -17,14 +17,14 @@ const Services = () => {
   const [data, setData] = useState(accountState.customerData)
 
   const addServerData = function(customer){
-    dispatch(addData(customer))  
+    dispatch(addCustomerData(customer))  
   }
   const updateServerData = function(customer){
-    dispatch(updateData(customer))
+    dispatch(updateCustomerData(customer))
   }
 
   const deleteServerData = function(id){
-    dispatch(deleteData(id))
+    dispatch(deleteCustomerData(id))
   }
   useEffect(() => {
     setData(accountState.customerData)

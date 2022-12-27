@@ -1,6 +1,4 @@
-import "./DataForm.css"
-import { ProductType, ProductStatus,AccountsPositions } from "../../features/AuthProvider"
-import useAuthAccount from "../../hooks/useAuthAccount"
+import "../DataForm.css"
 
 const DataFilter = ({prop,setProp,dataFeilds,genderFeild,total}) => {
 
@@ -10,6 +8,13 @@ const DataFilter = ({prop,setProp,dataFeilds,genderFeild,total}) => {
     }
     const createDataFeild = function(name, key){
         switch(name){
+            case "Id":
+                return  <th key={key} className="filter-th">
+                            <div>
+                                <label htmlFor= "id"></label>
+                                <input className="filter-input" type= "text" name="id" id="id" value={prop.id} onChange={e => UpdateInput(e, setProp.setID)}/>
+                            </div>
+                        </th>
             case "Name":
                 return  <th key={key} className="filter-th">
                             <div>

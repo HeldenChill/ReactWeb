@@ -8,13 +8,13 @@ import DataEdit from './DataEdit'
 const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, onDeleteServerData}) => {
   console.log("Render DataTable")
  
-  const GENDER = ["Male", "Female"]
+  const genderFeild = selectData.genderFeild
 
   const [id, setID] = useState(0)
   const [name, setName] = useState("")
   const [minAge, setMinAge] = useState(0)
   const [maxAge, setMaxAge] = useState(0)
-  const [gender, setGender] = useState(GENDER[0])
+  const [gender, setGender] = useState(genderFeild[0])
   const [address, setAddress] = useState("")
   const [telephone, setTelephone] = useState("")
 
@@ -64,6 +64,15 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
     setTableData(rawData)
     var lastData = rawData.slice(0, rawData.length)
 
+    if(filterState["Id"]){
+      var newData = []
+      for(var i = 0; i < lastData.length; i++){
+        if(lastData[i].id === id){
+          newData.push(lastData[i])
+        }
+      }
+      lastData = newData
+    }
     if(filterState["Name"]){
       if(name.toLowerCase() === ''){
         
@@ -78,101 +87,51 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
         lastData = newData
       }
     }
-    if(filterState["Type"]){
+    if(filterState["Gender"]){
       var newData = []
       for(var i = 0; i < lastData.length; i++){
-        if(lastData[i].type === type){
+        if(lastData[i].gender === gender){
           newData.push(lastData[i])
         }
       }
       lastData = newData
     }
-    if(filterState["Code"]){
-      if(code.toLowerCase() === ''){
+    if(filterState["Address"]){
+      if(address.toLowerCase() === ''){
         
       }
       else{     
         var newData = []
         for(var i = 0; i < lastData.length; i++){
-          if(lastData[i].code.toLowerCase().includes(code.toLowerCase())){
+          if(lastData[i].address.toLowerCase().includes(address.toLowerCase())){
             newData.push(lastData[i])
           }
         }
         lastData = newData
       }
     }   
-    if(filterState["Error Times"]){
+    if(filterState["Telephone"]){
+      if(telephone.toLowerCase() === ''){
+        
+      }
+      else{     
+        var newData = []
+        for(var i = 0; i < lastData.length; i++){
+          if(lastData[i].telephone.toLowerCase().includes(telephone.toLowerCase())){
+            newData.push(lastData[i])
+          }
+        }
+        lastData = newData
+      }
+    }
+    if(filterState["Age"]){
       var newData = []
       for(var i = 0; i < lastData.length; i++){
-        if(lastData[i].error_times >= errorTimesMin 
-          && lastData[i].error_times <= errorTimesMax)
+        if(lastData[i].age >= minAge 
+          && lastData[i].age <= maxAge)
           {
             newData.push(lastData[i])
           }
-      }
-      lastData = newData
-    }
-    if(filterState["Price"]){
-      var newData = []
-      for(var i = 0; i < lastData.length; i++){
-        if(lastData[i].price >= priceMin 
-          && lastData[i].price <= priceMax)
-          {
-            newData.push(lastData[i])
-          }
-      }
-      lastData = newData
-    }
-    if(filterState["Status"]){
-      var newData = []
-      for(var i = 0; i < lastData.length; i++){
-        if(lastData[i].status === status){
-          newData.push(lastData[i])
-        }
-      }
-      lastData = newData
-    }
-    if(filterState["Position"]){
-      var newData = []
-      for(var i = 0; i < lastData.length; i++){
-        if(lastData[i].position === position){
-          newData.push(lastData[i])
-        }
-      }
-      lastData = newData
-    }    
-    if(filterState["Produced By"]){
-      var newData = []
-      for(var i = 0; i < lastData.length; i++){
-        if(lastData[i].produced_by === producedBy){
-          newData.push(lastData[i])
-        }
-      }
-      lastData = newData
-    }
-    if(filterState["Produced Time"]){
-      var newData = []
-      var minDate = new Date(producedTimeMin)
-      var maxDate = new Date(producedTimeMax)
-
-      for(var i = 0; i < lastData.length; i++){
-        var currentDate = new Date(lastData[i].produced_time)
-        if(currentDate >= minDate && currentDate <= maxDate){
-          newData.push(lastData[i])
-        }
-      }
-      lastData = newData
-    }
-    if(filterState["Sold Time"]){
-      var newData = []
-      var minDate = new Date(soldTimeMin)
-      var maxDate = new Date(soldTimeMax)
-
-      for(var i = 0; i < lastData.length; i++){
-        var currentDate = new Date(lastData[i].sold_time)
-        if(currentDate >= minDate && currentDate <= maxDate){
-          newData.push(lastData[i])
-        }
       }
       lastData = newData
     }
@@ -222,7 +181,7 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
                 setTelephone:setTelephone,
               }}
               dataFeilds = {dataFeilds}
-              genderFeild = {GENDER}
+              genderFeild = {genderFeild}
               total = {tableData.length}
               ></DataFilter>
           </thead>
@@ -235,7 +194,6 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
                 onCreate={onSave}
                 onUpdate={onUpdate}
                 onDelete={onDelete} 
-                onEdit={onEdit} 
                 id={rowData.id} 
                 key={rowData.id}></TableRow>
               })
