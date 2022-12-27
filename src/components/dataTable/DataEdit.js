@@ -33,6 +33,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
     const [producedTime, setProducedTime] = useState(InitProduct.produced_time)
     const [soldTime, setSoldTime] = useState(InitProduct.sold_time)
     const [customerId, setCustomerId] = useState(InitProduct.customer_id)
+    const [soldBy, setSoldBy] = useState(InitProduct.sold_by)
     
     
 
@@ -60,7 +61,8 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
                 produced_by:producedBy,
                 produced_time:producedTime,
                 sold_time:soldTime,
-                customerId:customerId,
+                customer_id:customerId,
+                sold_by: soldBy,
             })
             onCancel()
         }
@@ -77,7 +79,8 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
                 produced_by:producedBy,
                 produced_time:producedTime,
                 sold_time:soldTime,
-                customerId:customerId,
+                customer_id:customerId,
+                sold_by:soldBy,
             })
             
         }
@@ -114,11 +117,11 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
                         </td>
             case "Error Times":
                 return  <td key={key} className="edit-td">
-                            <input disabled={isSeller} style={{maxWidth: "80%"}} type= "text" name="error_times" id="error_times" value={errorTimes} onChange={e => UpdateInput(e, setErrorTimes)}/>                              
+                            <input disabled={isSeller} style={{maxWidth: "80%"}} type= "number" name="error_times" id="error_times" value={errorTimes} onChange={e => UpdateInput(e, setErrorTimes)}/>                              
                         </td> 
             case "Price":
                 return  <td key={key} className="edit-td">
-                             <input style={{maxWidth: "80%"}} type= "text" name="price" id="price" value={price} onChange={e => UpdateInput(e, setPrice)}/>                              
+                             <input style={{maxWidth: "80%"}} type= "number" name="price" id="price" value={price} onChange={e => UpdateInput(e, setPrice)}/>                              
                         </td> 
             case "Status":
                 return  <td key={key} className="edit-td">

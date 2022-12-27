@@ -43,10 +43,10 @@ const DataFilter = ({prop,setProp,dataFeilds,genderFeild,total}) => {
                 return  <th key={key} className="filter-th">
                             <div style={{display: "flex"}}>
                                 <div style={{paddingRight: "1px",maxWidth:"40%",margin:"auto"}}>
-                                    <input style={{maxWidth: "100%"}} type= "text" name="age" id="age" value={prop.minAge} onChange={e => UpdateInput(e, setProp.setMinAge)}/>                              
+                                    <input style={{maxWidth: "100%"}} type= "number" name="age" id="age" value={prop.minAge} onChange={e => UpdateInput(e, setProp.setMinAge)}/>                              
                                 </div>
                                 <div style={{paddingLeft: "1px",maxWidth:"40%",margin:"auto"}}>
-                                    <input style={{maxWidth: "100%"}} type= "text" name="age" id="age" value={prop.maxAge} onChange={e => UpdateInput(e, setProp.setMaxAge)}/>
+                                    <input style={{maxWidth: "100%"}} type= "number" name="age" id="age" value={prop.maxAge} onChange={e => UpdateInput(e, setProp.setMaxAge)}/>
                                 </div>
                             </div>
                         </th> 

@@ -89,7 +89,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
                         </td>
             case "Age":
                 return  <td key={key} className="edit-td">
-                            <input style={{maxWidth: "80%"}} type= "text" name="age" id="age" value={age} onChange={e => UpdateInput(e, setAge)}/>                              
+                            <input style={{maxWidth: "80%"}} type= "number" name="age" id="age" value={age} onChange={e => UpdateInput(e, setAge)}/>                              
                         </td> 
             case "Telephone":
                 return  <td key={key} className="edit-td">

@@ -23,6 +23,7 @@ export const DefaultProduct = {
     produced_time: "",
     sold_time: "",
     customer_id: -1,
+    sold_by: "",
   }
 export const ProductType = ["Fan" ,"TV" ,"Fridge", "Car"]
 export const ProductStatus = ["In Stock", "On Sale", "Under Warranty", "Error", "Sold", "Returned"]
@@ -102,6 +103,7 @@ let productData = [
         produced_time: "2022-11-22",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
       {
         id: 1,
@@ -116,6 +118,7 @@ let productData = [
         produced_time: "2022-11-22",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
       {
         id: 2,
@@ -130,6 +133,7 @@ let productData = [
         produced_time: "2022-01-22",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
       
       {
@@ -145,6 +149,7 @@ let productData = [
         produced_time: "2022-03-12",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
   
       {
@@ -160,6 +165,7 @@ let productData = [
         produced_time: "2022-04-05",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
   
       {
@@ -175,6 +181,7 @@ let productData = [
         produced_time: "2022-06-02",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
   
       {
@@ -190,6 +197,7 @@ let productData = [
         produced_time: "2022-11-22",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
       {
         id: 7,
@@ -204,6 +212,7 @@ let productData = [
         produced_time: "2022-10-22",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
       {
         id: 8,
@@ -218,6 +227,7 @@ let productData = [
         produced_time: "2022-08-22",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
       {
         id: 9,
@@ -232,6 +242,7 @@ let productData = [
         produced_time: "2022-12-22",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
       
       {
@@ -247,6 +258,7 @@ let productData = [
         produced_time: "2022-08-10",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
   
       {
@@ -262,6 +274,7 @@ let productData = [
         produced_time: "2022-11-11",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
   
       {
@@ -277,6 +290,7 @@ let productData = [
         produced_time: "2022-12-22",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
   
       {
@@ -292,6 +306,7 @@ let productData = [
         produced_time: "2022-05-04",
         sold_time: "",
         customer_id: -1,
+        sold_by: "",
       },
   ]
 let customerData = [
@@ -428,6 +443,8 @@ export const AuthProvider = createSlice({
                 produced_by: payload.produced_by,
                 produced_time: payload.produced_time,
                 sold_time: payload.sold_time,
+                customer_id: payload.customer_id,
+                sold_by: payload.sold_by,
             }
             newData.push(newDataProduct)        
             productData = newData     
@@ -452,6 +469,8 @@ export const AuthProvider = createSlice({
                         produced_by: payload.produced_by,
                         produced_time: payload.produced_time,
                         sold_time: payload.sold_time,
+                        customer_id: payload.customer_id,
+                        sold_by: payload.sold_by,
                     }
                     return
                 }

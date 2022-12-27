@@ -38,10 +38,10 @@ const DataFilter = ({prop,setProp,dataFeilds,positionFeild,producedByFeild,total
                 return  <th key={key} className="filter-th">
                             <div style={{display: "flex"}}>
                                 <div style={{paddingRight: "1px",maxWidth:"40%",margin:"auto"}}>
-                                    <input style={{maxWidth: "100%"}} type= "text" name="error_times" id="error_times" value={prop.errorTimesMin} onChange={e => UpdateInput(e, setProp.setErrorTimesMin)}/>                              
+                                    <input style={{maxWidth: "100%"}} type= "number" name="error_times" id="error_times" value={prop.errorTimesMin} onChange={e => UpdateInput(e, setProp.setErrorTimesMin)}/>                              
                                 </div>
                                 <div style={{paddingLeft: "1px",maxWidth:"40%",margin:"auto"}}>
-                                    <input style={{maxWidth: "100%"}} type= "text" name="error_times" id="error_times" value={prop.errorTimesMax} onChange={e => UpdateInput(e, setProp.setErrorTimesMax)}/>
+                                    <input style={{maxWidth: "100%"}} type= "number" name="error_times" id="error_times" value={prop.errorTimesMax} onChange={e => UpdateInput(e, setProp.setErrorTimesMax)}/>
                                 </div>
                             </div>
                         </th> 
@@ -49,10 +49,10 @@ const DataFilter = ({prop,setProp,dataFeilds,positionFeild,producedByFeild,total
                 return  <th key={key} className="filter-th">
                             <div style={{display: "flex"}}>
                                 <div style={{paddingRight: "1px",maxWidth:"40%",margin:"auto"}}>
-                                    <input style={{maxWidth: "100%"}} type= "text" name="price" id="price" value={prop.priceMin} onChange={e => UpdateInput(e, setProp.setPriceMin)}/>                              
+                                    <input style={{maxWidth: "100%"}} type= "number" name="price" id="price" value={prop.priceMin} onChange={e => UpdateInput(e, setProp.setPriceMin)}/>                              
                                 </div>
                                 <div style={{paddingLeft: "1px",maxWidth:"40%",margin:"auto"}}>
-                                    <input style={{maxWidth: "100%"}} type= "text" name="price" id="price" value={prop.priceMax} onChange={e => UpdateInput(e, setProp.setPriceMax)}/>
+                                    <input style={{maxWidth: "100%"}} type= "number" name="price" id="price" value={prop.priceMax} onChange={e => UpdateInput(e, setProp.setPriceMax)}/>
                                 </div>
                             </div>
                         </th> 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import TableRow from '../TableRow'
+import TableRow from './TableRow'
 import '../DataTable.css'
 import DataFilter from './DataFilter'
 import DataEdit from './DataEdit'

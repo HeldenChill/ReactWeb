@@ -1,14 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import DataEdit from "./DataEdit";
-import './DataTable.css';
-import useAuthAccount from "../../hooks/useAuthAccount";
-import { AccountType } from "../../features/AuthProvider";
+import '../DataTable.css';
 
-const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, onSell, id}) => {
+const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, id}) => {
     const [update,setUpdate] = useState(false)
     const dataFeilds = selectData.dataFeilds
-    const accountType = useAuthAccount().accountType
     // const productStatus = selectData.productStatus
     const createDataFeild = function(name, key){
         switch(name){
@@ -16,24 +13,6 @@ const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, onSell, id
                 return <td key={key}>{rowData.id}</td>
             case "Name":
                 return <td key={key}>{rowData.name}</td>
-            case "Type":
-                return <td key={key}>{rowData.type}</td>
-            case "Code":
-                return <td key={key}>{rowData.code}</td>
-            case "Error Times":
-                return <td key={key}>{rowData.error_times}</td>
-            case "Price":
-                return <td key={key}>{`${rowData.price}$`}</td>
-            case "Status":
-                return <td key={key}>{rowData.status}</td>
-            case "Position":
-                return <td key={key}>{rowData.position}</td>
-            case "Produced By":
-                return <td key={key}>{rowData.produced_by}</td>
-            case "Produced Time":
-                return <td key={key}>{rowData.produced_time}</td>
-            case "Sold Time":
-                return <td key={key}>{rowData.sold_time}</td>
             case "Age":
                 return <td key={key}>{rowData.age}</td>
             case "Gender":
@@ -44,17 +23,6 @@ const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, onSell, id
                 return <td key={key}>{rowData.telephone}</td>
         }
     }
-    let action = null
-    if(accountType === AccountType.Admin || accountType === AccountType.Producer){
-        action = <button style={{width: "48px"}} onClick={() => {
-                    onDelete(id)
-                }}>Delete</button>
-    }
-    else if(accountType === AccountType.Seller){
-        action = <button style={{width: "48px"}} onClick={() => {
-                    onSell(id)
-                }}>Sell</button>
-    }
 
     let feild
     if(!update){
@@ -64,7 +32,10 @@ const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, onSell, id
                         <button style={{width: "48px"}} onClick={() => {
                             setUpdate(true)
                         }}>Edit</button>
-                        {action}                    
+
+                        <button style={{width: "48px"}} onClick={() => {
+                            onDelete(id)
+                        }}>Delete</button>
                     </td>
                 </tr>
         
