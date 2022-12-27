@@ -4,6 +4,7 @@ import { useState } from "react"
 import useIsType from "../../hooks/useIsType"
 import { AccountType } from "../../features/AuthProvider"
 import { DefaultProduct } from "../../features/AuthProvider"
+import React from "react";
 
 const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false}) => {
     var InitProduct

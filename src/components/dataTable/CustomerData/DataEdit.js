@@ -1,6 +1,7 @@
 import "../DataForm.css"
 import { useState } from "react"
 import { DefaultPerson } from "../../../features/AuthProvider"
+import React from "react";
 
 const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false}) => {
     var InitPerson

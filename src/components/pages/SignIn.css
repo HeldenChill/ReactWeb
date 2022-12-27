@@ -7,22 +7,22 @@
 
 @font-face {
     font-family: Raleway-Regular;
-    src: url('../../../public/fonts/raleway/Raleway-Regular.ttf'); 
+    src: url('../.././public/fonts/raleway/Raleway-Regular.ttf'); 
   }
   
   @font-face {
     font-family: Raleway-Medium;
-    src: url('../../../public/fonts/raleway/Raleway-Medium.ttf'); 
+    src: url('../.././public/fonts/raleway/Raleway-Medium.ttf'); 
   }
   
   @font-face {
     font-family: Raleway-SemiBold;
-    src: url('../../../public/fonts/raleway/Raleway-SemiBold.ttf'); 
+    src: url('../.././public/fonts/raleway/Raleway-SemiBold.ttf'); 
   }
   
   @font-face {
     font-family: Raleway-Bold;
-    src: url('../../../public/fonts/raleway/Raleway-Bold.ttf'); 
+    src: url('../.././public/fonts/raleway/Raleway-Bold.ttf'); 
   }
   
   /*//////////////////////////////////////////////////////////////////

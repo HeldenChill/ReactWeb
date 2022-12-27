@@ -1,4 +1,5 @@
 import "../DataForm.css"
+import React from "react";
 
 const DataFilter = ({prop,setProp,dataFeilds,genderFeild,total}) => {
 

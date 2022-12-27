@@ -4,6 +4,7 @@ import DataEdit from "./DataEdit";
 import './DataTable.css';
 import useAuthAccount from "../../hooks/useAuthAccount";
 import { AccountType } from "../../features/AuthProvider";
+import DialogForm from "../DialogForm";
 
 const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, onSell, id}) => {
     const [update,setUpdate] = useState(false)
@@ -51,16 +52,14 @@ const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, onSell, id
                 }}>Delete</button>
     }
     else if(accountType === AccountType.Seller){
-        action = <button style={{width: "48px"}} onClick={() => {
-                    onSell(id)
-                }}>Sell</button>
+        action = <DialogForm></DialogForm>
     }
 
     let feild
     if(!update){
         feild = <tr>
                     {dataFeilds.map((item, index) => createDataFeild(item, index))}
-                    <td style={{minWidth: "110px"}}>
+                    <td style={{minWidth: "110px",display: "flex", justifyContent: "center"}}>
                         <button style={{width: "48px"}} onClick={() => {
                             setUpdate(true)
                         }}>Edit</button>
