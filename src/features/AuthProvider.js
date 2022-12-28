@@ -28,9 +28,9 @@ export const DefaultProduct = {
 export const ProductType = ["Fan" ,"TV" ,"Fridge", "Car"]
 export const ProductStatus = ["In Stock", "On Sale", "Under Warranty", "Error", "Sold", "Returned"]
 export const DataFeilds = ["Name", "Type", "Code", "Error Times", "Price", "Status", "Position", "Produced By", "Produced Time", "Sold Time", "Customer ID"]
-
+export const AccountFeilds = ["Username","Password","Type","Position"]
 const AccountDataFields = {
-    Admin: ["Name", "Type", "Code", "Error Times", "Price", "Status", "Position", "Produced By", "Produced Time", "Sold Time"],
+    Admin: ["Name", "Type", "Code", "Error Times", "Price", "Status", "Position", "Produced By", "Produced Time", "Sold Time", "Customer ID"],
     Producer: ["Name", "Type", "Code", "Status", "Position", "Produced Time", "Sold Time"],
     Seller: ["Name", "Type", "Code", "Price", "Status", "Position", "Sold Time"],
     Insurance: ["Name", "Type", "Code", "Error Times", "Status", "Position","Produced By", "Produced Time"],
@@ -52,14 +52,14 @@ export const AccountType = {
 
 }
 export const CustomerDataFeilds = ["Id", "Name" , "Age", "Gender", "Address", "Telephone"]
-export const AccountsPositions = {
+var AccountsPositions = {
     Admin: [],
     Producer: ["Producer1","Producer2"],
     Seller: ["Seller1", "Seller2", "Seller3", "Seller4"],
     Insurance: ["Insurance1","Insurance2"],
 }
 
-const accounts =  [
+var accounts =  [
     {
         username: 'admin',
         password: 'admin',
@@ -89,7 +89,7 @@ const accounts =  [
     }
 ]
 
-let productData = [
+var productData = [
       {
         id: 0,
         name: "Electric Fan",
@@ -309,7 +309,7 @@ let productData = [
         sold_by: "",
       },
   ]
-let customerData = [
+var customerData = [
     {
         id: 0,
         name: "Henrry",
@@ -322,13 +322,14 @@ let customerData = [
     }
 ]
 
-const updateAccountData = function(state){
+const UpdateState = function(state){
     if(state.accountType === AccountType.Admin){
         state.data = productData
         state.dataFeilds = AccountDataFields.Admin
         state.statusFeild = AccountProductStatus.Admin
         state.positionFeild = [...AccountsPositions.Producer, ...AccountsPositions.Seller, ...AccountsPositions.Insurance]
-        state.producedByFeild = AccountsPositions.Producer
+        state.customerData = customerData
+        state.accountData = accounts
     }
     else if(state.accountType === AccountType.Producer){
         const newData = []
@@ -340,8 +341,7 @@ const updateAccountData = function(state){
         state.data = newData
         state.dataFeilds = AccountDataFields.Producer
         state.statusFeild = AccountProductStatus.Producer
-        state.positionFeild = [...AccountsPositions.Producer, ...AccountsPositions.Seller]
-        state.producedByFeild = AccountsPositions.Producer
+        state.positionFeild = [...AccountsPositions.Producer, ...AccountsPositions.Seller]       
     }
     else if(state.accountType === AccountType.Seller){
         const newData = []
@@ -370,6 +370,8 @@ const updateAccountData = function(state){
         state.producedByFeild = AccountsPositions.Producer
         state.positionFeild = [ ...AccountsPositions.Producer, ...AccountsPositions.Seller,...AccountsPositions.Insurance]
     }
+    state.producedByFeild = AccountsPositions.Producer
+    state.allPositionFeild = [...AccountsPositions.Producer, ...AccountsPositions.Seller, ...AccountsPositions.Insurance]
     state.lastID = productData[productData.length - 1].id
 }
 export const AuthProvider = createSlice({
@@ -382,9 +384,11 @@ export const AuthProvider = createSlice({
         dataFeilds: [],
         statusFeild: [],
         positionFeild: [],
-        producedByFeild: [],
+        producedByFeild:[],
+        allPositionFeild: [],
         data : [],
         customerData: [],
+        accountData: [],
         lastID : 0,
     },
     reducers: {
@@ -399,7 +403,7 @@ export const AuthProvider = createSlice({
                         state.isInAccount = true
                         state.accountType = account.type
                         state.accountPosition = account.position
-                        updateAccountData(state)                     
+                        UpdateState(state)                     
                         
                         return {
                             ...state,
@@ -425,6 +429,7 @@ export const AuthProvider = createSlice({
             state.positionFeild = []
             state.producedByFeild = []
             state.customerData = []
+            state.accountData = []
             state.data = []
         },
 
@@ -449,7 +454,7 @@ export const AuthProvider = createSlice({
             newData.push(newDataProduct)        
             productData = newData     
             console.log("ADD PRODUCT")               
-            updateAccountData(state)
+            UpdateState(state)
         },
 
         updateData: (state, data) => {        
@@ -476,7 +481,7 @@ export const AuthProvider = createSlice({
                 }
             })
             productData = newData               
-            updateAccountData(state)
+            UpdateState(state)
         },
 
         deleteData: (state, data) => {
@@ -488,7 +493,7 @@ export const AuthProvider = createSlice({
                 }
             }
             productData = newData
-            updateAccountData(state)
+            UpdateState(state)
         },
         addCustomerData: (state,data) => {
             const newData = customerData.slice(0, customerData.length)
@@ -506,7 +511,7 @@ export const AuthProvider = createSlice({
             newData.push(newDataProduct)        
             customerData = newData
             console.log("ADD CUSTOMER")
-            updateAccountData(state)
+            UpdateState(state)
         },
         updateCustomerData: (state, data) => {
             const newData = customerData.slice(0, customerData.length)
@@ -527,7 +532,7 @@ export const AuthProvider = createSlice({
                 }
             })
             customerData = newData
-            updateAccountData(state)
+            UpdateState(state)
         },
         deleteCustomerData: (state, data) => {
             const newData = customerData.slice(0, customerData.length)
@@ -538,13 +543,23 @@ export const AuthProvider = createSlice({
                 }
             }
             customerData = newData
-            updateAccountData(state)
-        }        
+            UpdateState(state)
+        },
+        addAccountData: (state, data) => {
+
+        },
+        updateAccountData: (state, data) => {
+
+        },
+        deleteAccountData: (state, data) => {
+
+        }
     }
 
 })
 
 export const { checkValidAccount, logoutAccount, updateData, addData, deleteData,
-                addCustomerData, updateCustomerData, deleteCustomerData} = AuthProvider.actions;
+                addCustomerData, updateCustomerData, deleteCustomerData,
+                addAccountData, updateAccountData, deleteAccountData} = AuthProvider.actions;
 export default AuthProvider.reducer;
 export const selectorAuthProvider = (state) => state.authProvider;

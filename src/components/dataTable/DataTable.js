@@ -2,17 +2,18 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import TableRow from './TableRow'
 import './DataTable.css'
-import DataForm from './DataForm'
-import { AccountType, ProductStatus, ProductType, AccountsPositions } from '../../features/AuthProvider'
+import useAuthAccount from '../../hooks/useAuthAccount'
+import { AccountType, ProductStatus, ProductType } from '../../features/AuthProvider'
 import DataFilter from './DataFilter'
 import DataEdit from './DataEdit'
 import useIsType from '../../hooks/useIsType'
+import DialogAlert from '../DialogAlert'
 
 const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, onDeleteServerData}) => {
   console.log("Render DataTable")
-
-  const positionFeild = [ ...AccountsPositions.Producer, ...AccountsPositions.Insurance, ...AccountsPositions.Seller]
-  const producedByFeild = AccountsPositions.Producer
+  const accountState = useAuthAccount()
+  const positionFeild = accountState.allPositionFeild
+  const producedByFeild = accountState.producedByFeild
   const [name, setName] = useState("")
   const [type, setType] = useState(ProductType[0])
   const [code, setCode] = useState("")
@@ -27,12 +28,14 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
   const [producedTimeMax, setProducedTimeMax] = useState("2022-01-01")
   const [soldTimeMin, setSoldTimeMin] = useState("2022-01-01")
   const [soldTimeMax, setSoldTimeMax] = useState("2022-01-01")
-  const [customerID, setCustomerID] = useState(-1)
+  const [customerID, setCustomerID] = useState(0)
 
   const [tableData, setTableData] = useState(rawData)
   
-  const [editing, setEditing] = useState(false)
-  const [editID, setEditID] = useState(0)
+  const [alertOpen, setAlertOpen] = useState(false) 
+  const [alertContent, setAlertContent] = useState("")
+  const [alertSeverity, setAlertSeverity] = useState("info")
+
   const dataFeilds = selectData.dataFeilds
   const [filterState, setFilterState] = useState(() => {
     var initFilterState = {}
@@ -44,23 +47,54 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
   
 
   const onSave = function(product){
+    console.log(product)
+    setAlertSeverity("success")
+    setAlertContent(`Success Create Product`)
+    setAlertOpen(true)
     onAddServerData(product)
   }
 
   const onUpdate = function(product){   
     // onSaveServerData({newData})
+    setAlertSeverity("success")
+    setAlertContent(`Update Product Success
+    - ID: ${product.id} 
+    - Customer ID: ${product.customer_id}`)
+    setAlertOpen(true)
     onUpdateServerData(product)
-    setEditing(false)
-    setEditID(0)
+  }
+
+  const onSell = function(id, rowData){
+    var product = {
+      id:rowData.id ,
+      name:rowData.name, 
+      type:rowData.type, 
+      code:rowData.code, 
+      error_times:rowData.error_times,
+      price:rowData.price,
+      status:"Sold", 
+      position:rowData.position,
+      produced_by:rowData.produced_by,
+      produced_time:rowData.produced_time,
+      sold_time:rowData.sold_time,
+      customer_id:id,
+      sold_by:rowData.sold_by,
+    }
+    console.log(product)
+    setAlertSeverity("success")
+    setAlertContent(`Sell Product Success
+    - ID: ${product.id} 
+    - Customer ID: ${product.customer_id}`)
+    setAlertOpen(true)
+    onUpdateServerData(product)
   }
   const onDelete = function(id){
+    setAlertSeverity("success")
+    setAlertContent(`Success Delete Product - ID: ${id}`)
+    setAlertOpen(true)
     onDeleteServerData(id)  
   }
 
-  const onEdit = function(id){
-    setEditID(id)
-    setEditing(true)    
-  }
 
   const updateFilterState = function(itemName){
     var newFilterState = {}
@@ -198,6 +232,17 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
       }
       lastData = newData
     }
+    if(filterState["Customer ID"]){
+        newData = []
+        console.log(customerID)
+        for(var i = 0; i < lastData.length; i++){
+          console.log(lastData[i].customer_id)
+          if(Number(customerID) === Number(lastData[i].customer_id)){
+            newData.push(lastData[i])
+          }
+        }
+        lastData = newData
+    }
     setTableData(lastData)
   }
 
@@ -270,6 +315,7 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
               ></DataFilter>
           </thead>
           <tbody>
+            <DialogAlert open={alertOpen} setOpen={setAlertOpen} content={alertContent} severity={alertSeverity}></DialogAlert>
             { 
               tableData.map((rowData) => {
                 return <TableRow 
@@ -278,9 +324,10 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
                 onCreate={onSave}
                 onUpdate={onUpdate}
                 onDelete={onDelete} 
-                onEdit={onEdit} 
+                _onSell={onSell}
                 id={rowData.id} 
-                key={rowData.id}></TableRow>
+                key={rowData.id}>                
+                </TableRow>
               })
             }
             {addDataForm}           

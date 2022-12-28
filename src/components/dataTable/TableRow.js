@@ -6,7 +6,7 @@ import useAuthAccount from "../../hooks/useAuthAccount";
 import { AccountType } from "../../features/AuthProvider";
 import DialogForm from "../DialogForm";
 
-const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, onSell, id}) => {
+const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, _onSell, id}) => {
     const [update,setUpdate] = useState(false)
     const dataFeilds = selectData.dataFeilds
     const accountType = useAuthAccount().accountType
@@ -43,8 +43,15 @@ const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, onSell, id
                 return <td key={key}>{rowData.address}</td>
             case "Telephone":
                 return <td key={key}>{rowData.telephone}</td>
+            case "Customer ID":
+                return <td key={key}>{rowData.customer_id}</td>
         }
     }
+
+    const onSell = function(id){
+        _onSell(id, rowData)
+    }
+    //#region 
     let action = null
     if(accountType === AccountType.Admin || accountType === AccountType.Producer){
         action = <button style={{width: "48px"}} onClick={() => {
@@ -52,7 +59,7 @@ const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, onSell, id
                 }}>Delete</button>
     }
     else if(accountType === AccountType.Seller){
-        action = <DialogForm></DialogForm>
+        action = <DialogForm title = "Sell" content={`Enter Id Customer for purchasing ${rowData.name}`} onSell = {onSell}></DialogForm>
     }
 
     let feild
@@ -63,8 +70,8 @@ const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, onSell, id
                         <button style={{width: "48px"}} onClick={() => {
                             setUpdate(true)
                         }}>Edit</button>
-                        {action}                    
-                    </td>
+                        {action}                                       
+                    </td>                    
                 </tr>
         
     }
@@ -78,7 +85,7 @@ const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, onSell, id
                     isCreate={false}
                 ></DataEdit>
     }
-
+    //#endregion
 
     return(
         <>

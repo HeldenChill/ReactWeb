@@ -97,6 +97,9 @@ const SignIn = () => {
 						<h4>
 							{"Type Account: " + accountState.accountType}
 						</h4>
+						<h4>
+							{"Position: " + accountState.accountPosition}
+						</h4>
 						<div className = 'button-align'>
 							<Button 							
 								link = '/sign-in'	

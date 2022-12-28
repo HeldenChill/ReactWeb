@@ -8,8 +8,8 @@ import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 
 
-const Services = () => {
-  console.log("Services Page Render")
+const Customers = () => {
+  console.log("Customer Page Render")
   const GENDER = ["Male", "Female"] 
 
   const dispatch = useDispatch()
@@ -48,4 +48,4 @@ const Services = () => {
   )
 }
 
-export default Services
+export default Customers

@@ -1,5 +1,5 @@
 import "./DataForm.css"
-import { ProductType, ProductStatus,AccountsPositions } from "../../features/AuthProvider"
+import { ProductType, ProductStatus } from "../../features/AuthProvider"
 import useAuthAccount from "../../hooks/useAuthAccount"
 import React from "react";
 const DataFilter = ({prop,setProp,dataFeilds,positionFeild,producedByFeild,total}) => {
@@ -103,6 +103,13 @@ const DataFilter = ({prop,setProp,dataFeilds,positionFeild,producedByFeild,total
                             </div>
                             <div style={{paddingTop: "1px"}}>
                                 <input style={{maxWidth: "90%"}} type= "date" name="sold_time" id="produced_sold_timetime" value={prop.soldTimeMax} onChange={e => UpdateInput(e, setProp.setSoldTimeMax)}/>
+                            </div>
+                        </th>
+            case "Customer ID":
+                return  <th key={key} className="filter-th">
+                            <div>
+                                <label htmlFor= "code"></label>
+                                <input className="filter-input" type= "number" name="code" id="code" value={prop.customerID} onChange={e => UpdateInput(e, setProp.setCustomerID)}/>
                             </div>
                         </th>
         }

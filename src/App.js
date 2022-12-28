@@ -2,7 +2,7 @@
 import "./App.css";
 import Home from './components/pages/Home';
 import Products from './components/pages/Products';
-import Services from './components/pages/Services';
+import Customers from './components/pages/Customers';
 import SignIn from './components/pages/SignIn';
 import React from "react";
 import Layout from './components/Layout';
@@ -21,7 +21,7 @@ export default function App() {
 
           {/* Protected link */}
           <Route element={<RequireAuth />}>
-            <Route path='services' element ={<Services />} />
+            <Route path='customers' element ={<Customers />} />
             <Route path='products' element ={<Products />} />      
             <Route path='accounts' element={<Accounts/> }/>
           </Route>

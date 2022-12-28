@@ -162,6 +162,10 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
                 return <td key={key} className="edit-td">
                             <input disabled={isProducer || isInsurance} style={{maxWidth: "90%"}} type= "date" name="sold_time" id="sold_time" value={soldTime} onChange={e => UpdateInput(e, setSoldTime)}/>                              
                         </td>
+            case "Customer ID":
+                return  <td key={key} className="edit-td">
+                            <input disabled={!isAdmin} style={{maxWidth: "80%"}} type= "number" name="error_times" id="error_times" value={customerId} onChange={e => UpdateInput(e, setCustomerId)}/>                              
+                        </td> 
         }
     }
 

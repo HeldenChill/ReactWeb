@@ -57,10 +57,10 @@ const Navbar = () => {
                     </Link>
                   </li> : null
                 }
-                {accountState.accountType === AccountType.Seller
+                {accountState.accountType === AccountType.Seller || accountState.accountType === AccountType.Admin
                 ? <li className='nav-item'>
-                    <Link to ='/services' className='nav-links' onClick={closeMobileMenu}>
-                      Services
+                    <Link to ='/customers' className='nav-links' onClick={closeMobileMenu}>
+                      Customers
                     </Link>
                   </li> : null
                 }   
