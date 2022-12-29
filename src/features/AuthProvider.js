@@ -33,7 +33,7 @@ const AccountDataFields = {
     Admin: ["Name", "Type", "Code", "Error Times", "Price", "Status", "Position", "Produced By", "Produced Time", "Sold Time", "Customer ID"],
     Producer: ["Name", "Type", "Code", "Status", "Position", "Produced Time", "Sold Time"],
     Seller: ["Name", "Type", "Code", "Price", "Status", "Position", "Sold Time"],
-    Insurance: ["Name", "Type", "Code", "Error Times", "Status", "Position","Produced By", "Produced Time"],
+    Insurance: ["Name", "Type", "Code", "Error Times", "Status", "Position","Produced By", "Produced Time","Customer ID"],
     None: []
 }
 const AccountProductStatus = {
