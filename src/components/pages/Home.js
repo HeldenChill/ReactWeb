@@ -1,3 +1,4 @@
+import InfoCard from '../InfoCard'
 import React from 'react'
 import '../../App.css'
 import Cards from '../Cards'
@@ -8,7 +9,7 @@ const Home = () => {
   return (
     <>
         <HeroSection />
-        <Cards />
+        <Cards></Cards>
         <Footer />
     </>
   )

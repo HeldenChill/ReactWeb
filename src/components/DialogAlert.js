@@ -1,14 +1,12 @@
 import { Dialog } from "@material-ui/core";
-import { useState } from "react";
 import React from "react";
 import { Alert } from "@mui/material";
-import Button from "./Button";
 
 
-const DialogAlert = (props) =>{
+const DialogAlert = ({severity, content, open, setOpen}) =>{
     return(
-        <Dialog open={props.open}>
-            <Alert severity={props.severity} onClose={() => props.setOpen(false)}>{props.content}</Alert>
+        <Dialog open={open}>
+            <Alert severity={severity} onClose={() => setOpen(false)}>{content}</Alert>
         </Dialog>
         
     )

@@ -64,7 +64,7 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
     onUpdateServerData(product)
   }
 
-  const onSell = function(id, rowData){
+  const onSell = function(payload, rowData){
     var product = {
       id:rowData.id ,
       name:rowData.name, 
@@ -76,8 +76,8 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
       position:rowData.position,
       produced_by:rowData.produced_by,
       produced_time:rowData.produced_time,
-      sold_time:rowData.sold_time,
-      customer_id:id,
+      sold_time:payload.sold_time,
+      customer_id:payload.id,
       sold_by:rowData.sold_by,
     }
     console.log(product)

@@ -23,6 +23,8 @@
   
   .cards__items {
     margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: auto auto;
   }
   
   .cards__item {
@@ -102,12 +104,6 @@
   @media only screen and (min-width: 1200px) {
     .content__blog__container {
       width: 84%;
-    }
-  }
-  
-  @media only screen and (min-width: 1024px) {
-    .cards__items {
-      display: flex;
     }
   }
   

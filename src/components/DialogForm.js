@@ -9,9 +9,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useState } from 'react';
 
 
-const FormDialog = (props) =>{
+const FormDialog = ({title, content, onSell}) =>{
   const [open, setOpen] = useState(false);
   const [value,setValue] = useState(0)
+  const [date,setDate] = useState("2022-01-01")
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -22,7 +24,10 @@ const FormDialog = (props) =>{
 
   const handleConfirm = () =>{
     console.log(value)
-    props.onSell(value)
+    onSell({
+      id:value,
+      sold_time:date,
+    })
     setOpen(false)
   }
 
@@ -32,11 +37,11 @@ const FormDialog = (props) =>{
         Sell
       </button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
+        <DialogTitle id="form-dialog-title">{title}</DialogTitle>
         <DialogContent>
           <DialogContentText>
           </DialogContentText>
-          {props.content}
+          {content}
           <TextField
             autoFocus
             margin="dense"
@@ -45,6 +50,17 @@ const FormDialog = (props) =>{
             type="number"
             fullWidth
             onChange={(e) => setValue(e.target.value)}
+            value={value}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="date"
+            label="DATE"
+            type="date"
+            fullWidth
+            onChange={(e) => setDate(e.target.value)}
+            value={date}
           />
         </DialogContent>
         <DialogActions>

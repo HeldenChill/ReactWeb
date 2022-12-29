@@ -9,6 +9,7 @@ import Layout from './components/Layout';
 import { Route, Routes } from "react-router-dom";
 import RequireAuth from "./components/RequireAuth";
 import Accounts from "./components/pages/Accounts";
+import Services from"./components/pages/Services";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
             <Route path='customers' element ={<Customers />} />
             <Route path='products' element ={<Products />} />      
             <Route path='accounts' element={<Accounts/> }/>
+            <Route path='services' element = {<Services />} />
           </Route>
         </Route>
       </Routes>

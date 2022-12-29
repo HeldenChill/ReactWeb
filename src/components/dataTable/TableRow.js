@@ -48,8 +48,8 @@ const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, _onSell, i
         }
     }
 
-    const onSell = function(id){
-        _onSell(id, rowData)
+    const onSell = function(payload){
+        _onSell(payload, rowData)
     }
     //#region 
     let action = null

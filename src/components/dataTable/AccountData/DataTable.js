@@ -4,6 +4,7 @@ import TableRow from './TableRow'
 import '../DataTable.css'
 import DataFilter from './DataFilter'
 import DataEdit from './DataEdit'
+import DialogAlert from '../../DialogAlert'
 
 const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, onDeleteServerData}) => {
   console.log("Render DataTable")
@@ -16,6 +17,10 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
   const [position, setPosition] = useState("")
   
   const [tableData, setTableData] = useState(rawData)
+
+  const [alertOpen, setAlertOpen] = useState(false) 
+  const [alertContent, setAlertContent] = useState("")
+  const [alertSeverity, setAlertSeverity] = useState("info")
   
   const dataFeilds = selectData.dataFeilds
   const [filterState, setFilterState] = useState(() => {
@@ -28,14 +33,26 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
   
 
   const onSave = function(product){
+    console.log(product)
+    setAlertSeverity("success")
+    setAlertContent(`Success Create Product`)
+    setAlertOpen(true)
     onAddServerData(product)
   }
 
   const onUpdate = function(product){   
     // onSaveServerData({newData})
+    setAlertSeverity("success")
+    setAlertContent(`Update Product Success
+    - ID: ${product.id} 
+    - Customer ID: ${product.customer_id}`)
+    setAlertOpen(true)
     onUpdateServerData(product)
   }
   const onDelete = function(id){
+    setAlertSeverity("success")
+    setAlertContent(`Success Delete Product - ID: ${id}`)
+    setAlertOpen(true)
     onDeleteServerData(id)  
   }
 
@@ -157,6 +174,7 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
               ></DataFilter>
           </thead>
           <tbody>
+            <DialogAlert open={alertOpen} setOpen={setAlertOpen} content={alertContent} severity={alertSeverity}></DialogAlert>
             { 
               tableData.map((rowData) => {
                 return <TableRow 

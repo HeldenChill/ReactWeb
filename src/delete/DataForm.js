@@ -1,6 +1,6 @@
 import React from "react";
 import { useState,useEffect } from "react";
-import { ProductType, ProductStatus } from "../../features/AuthProvider";
+import { ProductType, ProductStatus } from "../features/AuthProvider";
 
 const DataForm = ({ onCreate, onUpdate, onCancel, data, update=false}) => {
     

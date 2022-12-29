@@ -52,15 +52,44 @@ export const AccountType = {
 
 }
 export const CustomerDataFeilds = ["Id", "Name" , "Age", "Gender", "Address", "Telephone"]
+
 var AccountsPositions = {
-    Admin: [],
-    Producer: ["Producer1","Producer2"],
-    Seller: ["Seller1", "Seller2", "Seller3", "Seller4"],
-    Insurance: ["Insurance1","Insurance2"],
+    Admin: ["Admin1"],
+    Producer: ["Producer1"],
+    Seller: ["Seller1"],
+    Insurance: ["Insurance1"],
 }
 
+export const NotiType = ["error", "warning", "info", "success"]
+var notifications = [
+    {
+        id: 0,
+        type: "error",
+        title: "error",
+        content: "Product ID 1 - Can't not repair - Please notify customer with ID 3",
+        src_position: "Insurance1",
+        des_position: "Seller1"
+    },
+    {
+        id: 2,
+        type: "success",
+        title: "success",
+        content: "Product ID 1 - Can't not repair - Please notify customer with ID 3",
+        src_position: "Insurance1",
+        des_position: "Seller1"
+    },
+    {
+        id: 3,
+        type: "warning",
+        title: "warning",
+        content: "Product ID 1 - Can't not repair - Please notify customer with ID 3",
+        src_position: "Insurance1",
+        des_position: "Seller1"
+    }
+]
 var accounts =  [
     {
+        id: 0,
         username: 'admin',
         password: 'admin',
         type: AccountType.Admin,
@@ -68,6 +97,7 @@ var accounts =  [
     },
 
     {
+        id: 1,
         username: 'seller',
         password: 'seller',
         type: AccountType.Seller,
@@ -75,6 +105,7 @@ var accounts =  [
     },
 
     {
+        id: 2,
         username: 'insurance',
         password: 'insurance',
         type: AccountType.Insurance,
@@ -82,13 +113,13 @@ var accounts =  [
     },
 
     {
+        id: 3,
         username: 'producer',
         password: 'producer',
         type: AccountType.Producer,
         position: "Producer1",
     }
 ]
-
 var productData = [
       {
         id: 0,
@@ -341,7 +372,9 @@ const UpdateState = function(state){
         state.data = newData
         state.dataFeilds = AccountDataFields.Producer
         state.statusFeild = AccountProductStatus.Producer
-        state.positionFeild = [...AccountsPositions.Producer, ...AccountsPositions.Seller]       
+        state.positionFeild = [...AccountsPositions.Producer, ...AccountsPositions.Seller]   
+        
+        
     }
     else if(state.accountType === AccountType.Seller){
         const newData = []
@@ -373,6 +406,14 @@ const UpdateState = function(state){
     state.producedByFeild = AccountsPositions.Producer
     state.allPositionFeild = [...AccountsPositions.Producer, ...AccountsPositions.Seller, ...AccountsPositions.Insurance]
     state.lastID = productData[productData.length - 1].id
+
+    const newNotiData = []
+    for(let i = 0; i < notifications.length; i++){
+        if(notifications[i].des_position.toLowerCase().includes(state.accountPosition.toLowerCase())){
+            newNotiData.push(notifications[i])
+        }
+    }
+    state.notifications = newNotiData
 }
 export const AuthProvider = createSlice({
     name: 'authProvider',
@@ -389,6 +430,7 @@ export const AuthProvider = createSlice({
         data : [],
         customerData: [],
         accountData: [],
+        notifications: [],
         lastID : 0,
     },
     reducers: {
@@ -431,6 +473,7 @@ export const AuthProvider = createSlice({
             state.customerData = []
             state.accountData = []
             state.data = []
+            state.notifications = []
         },
 
         addData: (state, data) => {
@@ -510,7 +553,6 @@ export const AuthProvider = createSlice({
             }
             newData.push(newDataProduct)        
             customerData = newData
-            console.log("ADD CUSTOMER")
             UpdateState(state)
         },
         updateCustomerData: (state, data) => {
@@ -546,13 +588,60 @@ export const AuthProvider = createSlice({
             UpdateState(state)
         },
         addAccountData: (state, data) => {
-
+            const newData = accounts.slice(0, accounts.length)
+            const payload = data.payload
+            const newDataProduct = {
+                id:accounts[accounts.length - 1].id + 1,
+                username:payload.username,
+                password: payload.password,
+                type: payload.type,
+                position: payload.position,
+            }
+            newData.push(newDataProduct)        
+            accounts = newData
+            console.log("ADD ACCOUNT")
+            UpdateState(state)
         },
         updateAccountData: (state, data) => {
-
+            const newData = accounts.slice(0, accounts.length)
+            const payload = data.payload
+            accounts.map((item,index) => {
+                if(item.id === payload.id){
+                    newData[index] = {
+                        id:payload.id,
+                        username:payload.username,
+                        password: payload.password,
+                        type: payload.type,
+                        position: payload.position,
+                    }
+                    return
+                }
+            })
+            accounts = newData
+            UpdateState(state)
         },
         deleteAccountData: (state, data) => {
+            const newData = accounts.slice(0, accounts.length)
+            for(var i = 0; i < newData.length; i++){
+                if(newData[i].id === data.payload){
+                    newData.splice(i, 1)
+                    break
+                }
+            }
+            accounts = newData
+            UpdateState(state)
+        },
 
+        deleteNotification: (state, data) => {
+            const newData = notifications.slice(0, notifications.length)
+            for(var i = 0; i < newData.length; i++){
+                if(newData[i].id === data.payload){
+                    newData.splice(i, 1)
+                    break
+                }
+            }
+            notifications = newData
+            UpdateState(state)
         }
     }
 
@@ -560,6 +649,7 @@ export const AuthProvider = createSlice({
 
 export const { checkValidAccount, logoutAccount, updateData, addData, deleteData,
                 addCustomerData, updateCustomerData, deleteCustomerData,
-                addAccountData, updateAccountData, deleteAccountData} = AuthProvider.actions;
+                addAccountData, updateAccountData, deleteAccountData,
+                deleteNotification} = AuthProvider.actions;
 export default AuthProvider.reducer;
 export const selectorAuthProvider = (state) => state.authProvider;

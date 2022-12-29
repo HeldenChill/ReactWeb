@@ -39,8 +39,8 @@ const Navbar = () => {
               </div>
               <ul className={click ? 'nav-menu active' : 'nav-menu'}>
                 <li className='nav-item'>
-                  <Link to ='/home' className='nav-links' onClick={closeMobileMenu}>
-                    Home
+                  <Link to ='/services' className='nav-links' onClick={closeMobileMenu}>
+                    Services
                   </Link>
                 </li>                           
                 {accountState.isInAccount === true 
@@ -64,6 +64,7 @@ const Navbar = () => {
                     </Link>
                   </li> : null
                 }   
+                
                 <div className='nav-button'>
                   <Button 
                     link='/sign-in' 
