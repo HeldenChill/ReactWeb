@@ -631,7 +631,22 @@ export const AuthProvider = createSlice({
             accounts = newData
             UpdateState(state)
         },
-
+        addNotification: (state, data) => {
+            const newData = notifications.slice(0, notifications.length)
+            const payload = data.payload
+            const newDataProduct = {
+                id:notifications[notifications.length - 1].id + 1,
+                type:payload.type,
+                title: payload.title,
+                content: payload.content,
+                src_position: payload.src_position,
+                des_position: payload.des_position,
+            }
+            newData.push(newDataProduct)        
+            notifications = newData
+            console.log("ADD NOTI")
+            UpdateState(state)
+        },
         deleteNotification: (state, data) => {
             const newData = notifications.slice(0, notifications.length)
             for(var i = 0; i < newData.length; i++){
@@ -650,6 +665,6 @@ export const AuthProvider = createSlice({
 export const { checkValidAccount, logoutAccount, updateData, addData, deleteData,
                 addCustomerData, updateCustomerData, deleteCustomerData,
                 addAccountData, updateAccountData, deleteAccountData,
-                deleteNotification} = AuthProvider.actions;
+                addNotification,deleteNotification} = AuthProvider.actions;
 export default AuthProvider.reducer;
 export const selectorAuthProvider = (state) => state.authProvider;

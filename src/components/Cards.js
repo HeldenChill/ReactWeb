@@ -1,9 +1,9 @@
 import React from 'react'
-import CardItem from './CardItem'
 import InfoCard from './InfoCard'
 import './Cards.css'
+import DialogNotiForm from './DialogNotiForm'
 
-const Cards = ({title,data,onDelete}) => {
+const Cards = ({title,data,onDelete,onCreate,desFeilds}) => {
   return (
     <div className='cards'>
         <h1>{title}</h1>
@@ -11,8 +11,9 @@ const Cards = ({title,data,onDelete}) => {
             <div className='cards__wrapper'>
                 <ul className='cards__items'>
                     {
-                        data.map((item) => 
+                        data.map((item,index) => 
                         (<InfoCard
+                        key={index}
                         id={item.id}
                         type={item.type}
                         title={item.title} 
@@ -20,6 +21,9 @@ const Cards = ({title,data,onDelete}) => {
                         onDelete = {onDelete}
                         />))
                     }
+                </ul>
+                <ul>
+                    <DialogNotiForm onConfirm={onCreate} desFeilds={desFeilds}></DialogNotiForm>
                 </ul>
             </div>
         </div>
