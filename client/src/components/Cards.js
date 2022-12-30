@@ -14,7 +14,7 @@ const Cards = ({title,data,onDelete,onCreate,desFeilds}) => {
                         data.map((item,index) => 
                         (<InfoCard
                         key={index}
-                        id={item.id}
+                        id={item._id}
                         type={item.type}
                         title={item.title} 
                         content = {item.content}

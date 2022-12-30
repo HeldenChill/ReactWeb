@@ -35,26 +35,25 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
   })
   
 
-  const onSave = function(product){
-    console.log(product)
+  const onSave = function(customer){
+    console.log(customer)
     setAlertSeverity("success")
-    setAlertContent(`Success Create Product`)
+    setAlertContent(`Success Create Customer`)
     setAlertOpen(true)
-    onAddServerData(product)
+    onAddServerData(customer)
   }
 
-  const onUpdate = function(product){   
+  const onUpdate = function(customer){   
     // onSaveServerData({newData})
     setAlertSeverity("success")
-    setAlertContent(`Update Product Success
-    - ID: ${product.id} 
-    - Customer ID: ${product.customer_id}`)
+    setAlertContent(`Update Customer Success
+    - ID: ${customer._id}`)
     setAlertOpen(true)
-    onUpdateServerData(product)
+    onUpdateServerData(customer)
   }
   const onDelete = function(id){
     setAlertSeverity("success")
-    setAlertContent(`Success Delete Product - ID: ${id}`)
+    setAlertContent(`Success Celete Product - ID: ${id}`)
     setAlertOpen(true)
     onDeleteServerData(id)  
   }
@@ -84,7 +83,7 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
     if(filterState["Id"]){
       var newData = []
       for(var i = 0; i < lastData.length; i++){
-        if(lastData[i].id === id){
+        if(lastData[i]._id === id){
           newData.push(lastData[i])
         }
       }
@@ -212,8 +211,8 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
                 onCreate={onSave}
                 onUpdate={onUpdate}
                 onDelete={onDelete} 
-                id={rowData.id} 
-                key={rowData.id}></TableRow>
+                id={rowData._id} 
+                key={rowData._id}></TableRow>
               })
             }
             {addDataForm}           

@@ -27,7 +27,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
         }
         else if(!isCreate){
             onUpdate({
-                id:data.id ,
+                _id:data._id ,
                 username:username, 
                 password: password,
                 type: type,
@@ -37,7 +37,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
         }
         else{
             onCreate({
-                id:-1 ,
+                _id:-1 ,
                 username:username, 
                 password: password,
                 type: type,

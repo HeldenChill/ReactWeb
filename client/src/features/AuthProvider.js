@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from 'axios'
 
 export const DefaultPerson = {
-    id: -1,
+    _id: -1,
     name: "",
     age: 0,
     gender: "Male",
     address: "",
     telephone: "",
-    buy_products: [],
-    stores: [],
+    buy_products: "",
+    stores: "",
 }
 export const DefaultProduct = {
     id: -1,
@@ -61,299 +62,325 @@ var AccountsPositions = {
 }
 
 export const NotiType = ["error", "warning", "info", "success"]
-var notifications = [
-    {
-        id: 0,
-        type: "error",
-        title: "error",
-        content: "Product ID 1 - Can't not repair - Please notify customer with ID 3",
-        src_position: "Insurance1",
-        des_position: "Seller1"
-    },
-    {
-        id: 2,
-        type: "success",
-        title: "success",
-        content: "Product ID 1 - Can't not repair - Please notify customer with ID 3",
-        src_position: "Insurance1",
-        des_position: "Seller1"
-    },
-    {
-        id: 3,
-        type: "warning",
-        title: "warning",
-        content: "Product ID 1 - Can't not repair - Please notify customer with ID 3",
-        src_position: "Insurance1",
-        des_position: "Seller1"
-    }
-]
-var accounts =  [
-    {
-        id: 0,
-        username: 'admin',
-        password: 'admin',
-        type: AccountType.Admin,
-        position: "Admin1",
-    },
+var notifications = []
+var accounts = []
+// var accounts =  [
+//     {
+//         id: 0,
+//         username: 'admin',
+//         password: 'admin',
+//         type: AccountType.Admin,
+//         position: "Admin1",
+//     },
 
-    {
-        id: 1,
-        username: 'seller',
-        password: 'seller',
-        type: AccountType.Seller,
-        position: "Seller1",
-    },
+//     {
+//         id: 1,
+//         username: 'seller',
+//         password: 'seller',
+//         type: AccountType.Seller,
+//         position: "Seller1",
+//     },
 
-    {
-        id: 2,
-        username: 'insurance',
-        password: 'insurance',
-        type: AccountType.Insurance,
-        position: "Insurance1",
-    },
+//     {
+//         id: 2,
+//         username: 'insurance',
+//         password: 'insurance',
+//         type: AccountType.Insurance,
+//         position: "Insurance1",
+//     },
 
-    {
-        id: 3,
-        username: 'producer',
-        password: 'producer',
-        type: AccountType.Producer,
-        position: "Producer1",
-    }
-]
-var productData = [
-      {
-        id: 0,
-        name: "Electric Fan",
-        type: "Fan",
-        code: "EF001",
-        error_times: 0,
-        price: 10,
-        status: "In Stock",
-        position: "Producer1",
-        produced_by: "Producer1",
-        produced_time: "2022-11-22",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
-      {
-        id: 1,
-        name: "Ceilling Fan",
-        type: "Fan",
-        code: "EF002",
-        error_times: 0,
-        price: 10,
-        status: "In Stock",
-        position: "Producer1",
-        produced_by: "Producer1",
-        produced_time: "2022-11-22",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
-      {
-        id: 2,
-        name: "Flat Screen TV - 20inch",
-        type: "TV",
-        code: "ET001",
-        error_times: 0,
-        price: 10,
-        status: "On Sale",
-        position: "Seller1",
-        produced_by: "Producer1",
-        produced_time: "2022-01-22",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
+//     {
+//         id: 3,
+//         username: 'producer',
+//         password: 'producer',
+//         type: AccountType.Producer,
+//         position: "Producer1",
+//     }
+// ]
+// var productData = [
+//       {
+//         id: 0,
+//         name: "Electric Fan",
+//         type: "Fan",
+//         code: "EF001",
+//         error_times: 0,
+//         price: 10,
+//         status: "In Stock",
+//         position: "Producer1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-11-22",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
+//       {
+//         id: 1,
+//         name: "Ceilling Fan",
+//         type: "Fan",
+//         code: "EF002",
+//         error_times: 0,
+//         price: 10,
+//         status: "In Stock",
+//         position: "Producer1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-11-22",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
+//       {
+//         id: 2,
+//         name: "Flat Screen TV - 20inch",
+//         type: "TV",
+//         code: "ET001",
+//         error_times: 0,
+//         price: 10,
+//         status: "On Sale",
+//         position: "Seller1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-01-22",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
       
-      {
-        id: 3,
-        name: "Flat Screen TV - 42inch",
-        type: "TV",
-        code: "ET002",
-        error_times: 0,
-        price: 10,
-        status: "On Sale",
-        position: "Seller1",
-        produced_by: "Producer1",
-        produced_time: "2022-03-12",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
+//       {
+//         id: 3,
+//         name: "Flat Screen TV - 42inch",
+//         type: "TV",
+//         code: "ET002",
+//         error_times: 0,
+//         price: 10,
+//         status: "On Sale",
+//         position: "Seller1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-03-12",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
   
-      {
-        id: 4,
-        name: "Flat Screen TV - 65inch",
-        type: "TV",
-        code: "ET003",
-        error_times: 0,
-        price: 10,
-        status: "On Sale",
-        position: "Seller1",
-        produced_by: "Producer1",
-        produced_time: "2022-04-05",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
+//       {
+//         id: 4,
+//         name: "Flat Screen TV - 65inch",
+//         type: "TV",
+//         code: "ET003",
+//         error_times: 0,
+//         price: 10,
+//         status: "On Sale",
+//         position: "Seller1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-04-05",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
   
-      {
-        id: 5,
-        name: "Flat Screen TV - 80inch",
-        type: "TV",
-        code: "ET004",
-        error_times: 0,
-        price: 10,
-        status: "On Sale",
-        position: "Seller1",
-        produced_by: "Producer1",
-        produced_time: "2022-06-02",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
+//       {
+//         id: 5,
+//         name: "Flat Screen TV - 80inch",
+//         type: "TV",
+//         code: "ET004",
+//         error_times: 0,
+//         price: 10,
+//         status: "On Sale",
+//         position: "Seller1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-06-02",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
   
-      {
-        id: 6,
-        name: "Save Energy Fridges",
-        type: "Fridge",
-        code: "EF001",
-        error_times: 0,
-        price: 10,
-        status: "Under Warranty",
-        position: "Insurance1",
-        produced_by: "Producer1",
-        produced_time: "2022-11-22",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
-      {
-        id: 7,
-        name: "Electric Fan",
-        type: "Fan",
-        code: "EF001",
-        error_times: 0,
-        price: 10,
-        status: "In Stock",
-        position: "Producer1",
-        produced_by: "Producer1",
-        produced_time: "2022-10-22",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
-      {
-        id: 8,
-        name: "Ceilling Fan",
-        type: "Fan",
-        code: "EF002",
-        error_times: 0,
-        price: 10,
-        status: "In Stock",
-        position: "Producer1",
-        produced_by: "Producer1",
-        produced_time: "2022-08-22",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
-      {
-        id: 9,
-        name: "Flat Screen TV - 20inch",
-        type: "TV",
-        code: "ET001",
-        error_times: 0,
-        price: 10,
-        status: "On Sale",
-        position: "Seller1",
-        produced_by: "Producer1",
-        produced_time: "2022-12-22",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
+//       {
+//         id: 6,
+//         name: "Save Energy Fridges",
+//         type: "Fridge",
+//         code: "EF001",
+//         error_times: 0,
+//         price: 10,
+//         status: "Under Warranty",
+//         position: "Insurance1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-11-22",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
+//       {
+//         id: 7,
+//         name: "Electric Fan",
+//         type: "Fan",
+//         code: "EF001",
+//         error_times: 0,
+//         price: 10,
+//         status: "In Stock",
+//         position: "Producer1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-10-22",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
+//       {
+//         id: 8,
+//         name: "Ceilling Fan",
+//         type: "Fan",
+//         code: "EF002",
+//         error_times: 0,
+//         price: 10,
+//         status: "In Stock",
+//         position: "Producer1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-08-22",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
+//       {
+//         id: 9,
+//         name: "Flat Screen TV - 20inch",
+//         type: "TV",
+//         code: "ET001",
+//         error_times: 0,
+//         price: 10,
+//         status: "On Sale",
+//         position: "Seller1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-12-22",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
       
-      {
-        id: 10,
-        name: "Flat Screen TV - 42inch",
-        type: "TV",
-        code: "ET002",
-        error_times: 0,
-        price: 10,
-        status: "On Sale",
-        position: "Seller1",
-        produced_by: "Producer1",
-        produced_time: "2022-08-10",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
+//       {
+//         id: 10,
+//         name: "Flat Screen TV - 42inch",
+//         type: "TV",
+//         code: "ET002",
+//         error_times: 0,
+//         price: 10,
+//         status: "On Sale",
+//         position: "Seller1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-08-10",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
   
-      {
-        id: 11,
-        name: "Flat Screen TV - 65inch",
-        type: "TV",
-        code: "ET003",
-        error_times: 0,
-        price: 10,
-        status: "On Sale",
-        position: "Seller1",
-        produced_by: "Producer1",
-        produced_time: "2022-11-11",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
+//       {
+//         id: 11,
+//         name: "Flat Screen TV - 65inch",
+//         type: "TV",
+//         code: "ET003",
+//         error_times: 0,
+//         price: 10,
+//         status: "On Sale",
+//         position: "Seller1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-11-11",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
   
-      {
-        id: 12,
-        name: "Flat Screen TV - 80inch",
-        type: "TV",
-        code: "ET004",
-        error_times: 0,
-        price: 10,
-        status: "On Sale",
-        position: "Seller1",
-        produced_by: "Producer1",
-        produced_time: "2022-12-22",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
+//       {
+//         id: 12,
+//         name: "Flat Screen TV - 80inch",
+//         type: "TV",
+//         code: "ET004",
+//         error_times: 0,
+//         price: 10,
+//         status: "On Sale",
+//         position: "Seller1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-12-22",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
   
-      {
-        id: 13,
-        name: "Save Energy Fridges",
-        type: "Fridge",
-        code: "EF001",
-        error_times: 0,
-        price: 10,
-        status: "Under Warranty",
-        position: "Insurance1",
-        produced_by: "Producer1",
-        produced_time: "2022-05-04",
-        sold_time: "",
-        customer_id: -1,
-        sold_by: "",
-      },
-  ]
-var customerData = [
-    {
-        id: 0,
-        name: "Henrry",
-        age: 25,
-        gender: "Male",
-        address: "Hanoi",
-        telephone: "0324678273",
-        buy_products: [1],
-        stores: ["Seller1"]
-    }
-]
+//       {
+//         id: 13,
+//         name: "Save Energy Fridges",
+//         type: "Fridge",
+//         code: "EF001",
+//         error_times: 0,
+//         price: 10,
+//         status: "Under Warranty",
+//         position: "Insurance1",
+//         produced_by: "Producer1",
+//         produced_time: "2022-05-04",
+//         sold_time: "",
+//         customer_id: -1,
+//         sold_by: "",
+//       },
+//   ]
+var productData = []
+var customerData = []
+// var customerData = [
+//     {
+//         id: 0,
+//         name: "Henrry",
+//         age: 25,
+//         gender: "Male",
+//         address: "Hanoi",
+//         telephone: "0324678273",
+//         buy_products: [1],
+//         stores: ["Seller1"]
+//     }
+// ]
 
 const UpdateState = function(state){
+    
+    let producer = []
+    let seller = []
+    let insurance = []
+    let i = 0
+    for(i = 0; i < accounts.length; i++){
+        if(accounts[i].type === AccountType.Producer){
+            let isDup = false
+            for(let j = 0; j < producer.length; j++){
+                if(accounts[i].position.toLowerCase() === producer[j].toLowerCase()){
+                    isDup = true
+                    break
+                }
+            }
+            if(!isDup){
+                producer.push(accounts[i].position)
+            }
+
+        }
+        else if(accounts[i].type === AccountType.Seller){
+            let isDup = false
+            for(let j = 0; j < seller.length; j++){
+                if(accounts[i].position.toLowerCase() === seller[j].toLowerCase()){
+                    isDup = true
+                    break
+                }
+            }
+            if(!isDup){
+                seller.push(accounts[i].position)
+            }
+        }
+        else if(accounts[i].type === AccountType.Insurance){
+            let isDup = false
+            for(let j = 0; j < insurance.length; j++){
+                if(accounts[i].position.toLowerCase() === insurance[j].toLowerCase()){
+                    isDup = true
+                    break
+                }
+            }
+            if(!isDup){
+                insurance.push(accounts[i].position)
+            }
+            
+        }
+    }
+
+    AccountsPositions = {Admin: [], Producer: producer, Seller: seller, Insurance: insurance}
+
     if(state.accountType === AccountType.Admin){
         state.data = productData
         state.dataFeilds = AccountDataFields.Admin
@@ -365,7 +392,7 @@ const UpdateState = function(state){
     else if(state.accountType === AccountType.Producer){
         const newData = []
         productData.map((item) => {
-            if(item.produced_by.toLocaleLowerCase().includes(state.accountPosition.toLowerCase())){
+            if(item.produced_by.toLowerCase().includes(state.accountPosition.toLowerCase())){
                 newData.push(item)
             }
         })
@@ -405,7 +432,6 @@ const UpdateState = function(state){
     }
     state.producedByFeild = AccountsPositions.Producer
     state.allPositionFeild = [...AccountsPositions.Producer, ...AccountsPositions.Seller, ...AccountsPositions.Insurance]
-    state.lastID = productData[productData.length - 1].id
 
     const newNotiData = []
     for(let i = 0; i < notifications.length; i++){
@@ -414,6 +440,54 @@ const UpdateState = function(state){
         }
     }
     state.notifications = newNotiData
+
+    
+}
+
+export const FetchServerData = async function(type){
+    let res = await axios.get(`http://localhost:4000/api/${type}`).then(
+            (response) => {
+                if(type === "account")
+                    accounts = response.data    
+                else if(type === "customer"){
+                    customerData = response.data
+                }      
+                else if(type === "product"){
+                    productData = response.data
+                }     
+                else if("notification"){
+                    notifications  = response.data
+                }
+            }                
+        )
+    return res
+}
+
+
+export const PostServerData = async function(data, type){
+    let res = await axios.post(`http://localhost:4000/api/${type}`,data)
+    return res
+}
+
+export const PutServerData = async function(id, data, type){
+    let res = await axios.put(`http://localhost:4000/api/${type}/${id}`, data)
+    return res
+}
+
+export const DeleteServerData = async function(id, type){
+    let res = await axios.delete(`http://localhost:4000/api/${type}/${id}`)
+    return res
+}
+
+export const FetchAllData = async function(){  
+    let res = await Promise.all([axios.get(`http://localhost:4000/api/product`).then((response) => {
+        accounts = response.data   
+    }), await axios.get(`http://localhost:4000/api/customer`).then((response) => {
+        customerData = response.data   
+    })]) 
+    
+    return res
+    // await axios.get(`http://localhost:4000/api/product`)
 }
 export const AuthProvider = createSlice({
     name: 'authProvider',
@@ -437,6 +511,7 @@ export const AuthProvider = createSlice({
         checkValidAccount: (state,data) => {  
             state.isCorrect = false
             state.isInAccount = false
+            
             accounts.map((account) => {
                 if(account.username === data.payload.username)
                 {
@@ -444,8 +519,7 @@ export const AuthProvider = createSlice({
                         state.isCorrect = true
                         state.isInAccount = true
                         state.accountType = account.type
-                        state.accountPosition = account.position
-                        UpdateState(state)                     
+                        state.accountPosition = account.position                
                         
                         return {
                             ...state,
@@ -474,197 +548,25 @@ export const AuthProvider = createSlice({
             state.accountData = []
             state.data = []
             state.notifications = []
+            productData = []
+            customerData = []
+            accounts = []
         },
 
-        addData: (state, data) => {
-            const newData = productData.slice(0, productData.length)
-            const payload = data.payload
-            const newDataProduct = {
-                id:state.lastID + 1,
-                name:payload.name,
-                type:payload.type,
-                code:payload.code,
-                error_times:payload.error_times,
-                price: payload.price,
-                status: payload.status,
-                position: payload.position,
-                produced_by: payload.produced_by,
-                produced_time: payload.produced_time,
-                sold_time: payload.sold_time,
-                customer_id: payload.customer_id,
-                sold_by: payload.sold_by,
-            }
-            newData.push(newDataProduct)        
-            productData = newData     
-            console.log("ADD PRODUCT")               
+        updateAccountData: (state) => {
             UpdateState(state)
         },
 
-        updateData: (state, data) => {        
-            const newData = productData.slice(0, productData.length)
-            const payload = data.payload
-            productData.map((item,index) => {
-                if(item.id === payload.id){
-                    newData[index] = {
-                        id:payload.id,
-                        name:payload.name,
-                        type:payload.type,
-                        code:payload.code,
-                        error_times:payload.error_times,
-                        price: payload.price,
-                        status: payload.status,
-                        position: payload.position,
-                        produced_by: payload.produced_by,
-                        produced_time: payload.produced_time,
-                        sold_time: payload.sold_time,
-                        customer_id: payload.customer_id,
-                        sold_by: payload.sold_by,
-                    }
-                    return
-                }
-            })
-            productData = newData               
-            UpdateState(state)
-        },
-
-        deleteData: (state, data) => {
-            const newData = productData.slice(0, productData.length)
-            for(var i = 0; i < newData.length; i++){
-                if(newData[i].id === data.payload){
-                    newData.splice(i, 1)
-                    break
-                }
-            }
-            productData = newData
-            UpdateState(state)
-        },
-        addCustomerData: (state,data) => {
-            const newData = customerData.slice(0, customerData.length)
-            const payload = data.payload
-            const newDataProduct = {
-                id:customerData[customerData.length - 1].id + 1,
-                name:payload.name,
-                age: payload.age,
-                gender: payload.gender,
-                address: payload.address,
-                telephone: payload.telephone,
-                buy_products: payload.products,
-                stores: payload.stores
-            }
-            newData.push(newDataProduct)        
-            customerData = newData
-            UpdateState(state)
-        },
-        updateCustomerData: (state, data) => {
-            const newData = customerData.slice(0, customerData.length)
-            const payload = data.payload
-            customerData.map((item,index) => {
-                if(item.id === payload.id){
-                    newData[index] = {
-                        id:payload.id,
-                        name:payload.name,
-                        age: payload.age,
-                        gender: payload.gender,
-                        address: payload.address,
-                        telephone: payload.telephone,
-                        buy_products: payload.products,
-                        stores: payload.stores
-                    }
-                    return
-                }
-            })
-            customerData = newData
-            UpdateState(state)
-        },
-        deleteCustomerData: (state, data) => {
-            const newData = customerData.slice(0, customerData.length)
-            for(var i = 0; i < newData.length; i++){
-                if(newData[i].id === data.payload){
-                    newData.splice(i, 1)
-                    break
-                }
-            }
-            customerData = newData
-            UpdateState(state)
-        },
-        addAccountData: (state, data) => {
-            const newData = accounts.slice(0, accounts.length)
-            const payload = data.payload
-            const newDataProduct = {
-                id:accounts[accounts.length - 1].id + 1,
-                username:payload.username,
-                password: payload.password,
-                type: payload.type,
-                position: payload.position,
-            }
-            newData.push(newDataProduct)        
-            accounts = newData
-            console.log("ADD ACCOUNT")
-            UpdateState(state)
-        },
-        updateAccountData: (state, data) => {
-            const newData = accounts.slice(0, accounts.length)
-            const payload = data.payload
-            accounts.map((item,index) => {
-                if(item.id === payload.id){
-                    newData[index] = {
-                        id:payload.id,
-                        username:payload.username,
-                        password: payload.password,
-                        type: payload.type,
-                        position: payload.position,
-                    }
-                    return
-                }
-            })
-            accounts = newData
-            UpdateState(state)
-        },
-        deleteAccountData: (state, data) => {
-            const newData = accounts.slice(0, accounts.length)
-            for(var i = 0; i < newData.length; i++){
-                if(newData[i].id === data.payload){
-                    newData.splice(i, 1)
-                    break
-                }
-            }
-            accounts = newData
-            UpdateState(state)
-        },
-        addNotification: (state, data) => {
-            const newData = notifications.slice(0, notifications.length)
-            const payload = data.payload
-            const newDataProduct = {
-                id:notifications[notifications.length - 1].id + 1,
-                type:payload.type,
-                title: payload.title,
-                content: payload.content,
-                src_position: payload.src_position,
-                des_position: payload.des_position,
-            }
-            newData.push(newDataProduct)        
-            notifications = newData
-            console.log("ADD NOTI")
-            UpdateState(state)
-        },
-        deleteNotification: (state, data) => {
-            const newData = notifications.slice(0, notifications.length)
-            for(var i = 0; i < newData.length; i++){
-                if(newData[i].id === data.payload){
-                    newData.splice(i, 1)
-                    break
-                }
-            }
-            notifications = newData
-            UpdateState(state)
+        fetchData: (state) => {
+            FetchServerData("account")
+            FetchServerData("product")
+            FetchServerData("customer")
+            UpdateState()
         }
     }
 
 })
 
-export const { checkValidAccount, logoutAccount, updateData, addData, deleteData,
-                addCustomerData, updateCustomerData, deleteCustomerData,
-                addAccountData, updateAccountData, deleteAccountData,
-                addNotification,deleteNotification} = AuthProvider.actions;
+export const { checkValidAccount, logoutAccount,updateAccountData, fetchData} = AuthProvider.actions;
 export default AuthProvider.reducer;
 export const selectorAuthProvider = (state) => state.authProvider;

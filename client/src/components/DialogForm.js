@@ -11,7 +11,7 @@ import { useState } from 'react';
 
 const FormDialog = ({title, content, onSell}) =>{
   const [open, setOpen] = useState(false);
-  const [value,setValue] = useState(0)
+  const [value,setValue] = useState("")
   const [date,setDate] = useState("2022-01-01")
 
   const handleClickOpen = () => {
@@ -25,9 +25,11 @@ const FormDialog = ({title, content, onSell}) =>{
   const handleConfirm = () =>{
     console.log(value)
     onSell({
-      id:value,
+      customer_id:value,
       sold_time:date,
+      
     })
+    console.log(value)
     setOpen(false)
   }
 
@@ -47,7 +49,7 @@ const FormDialog = ({title, content, onSell}) =>{
             margin="dense"
             id="name"
             label="ID"
-            type="number"
+            type="text"
             fullWidth
             onChange={(e) => setValue(e.target.value)}
             value={value}

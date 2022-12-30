@@ -1,7 +1,7 @@
 import React from "react"
 import { useDispatch } from "react-redux"
 import useAuthAccount from "../../hooks/useAuthAccount"
-import { deleteNotification,addNotification } from "../../features/AuthProvider"
+import { updateAccountData } from "../../features/AuthProvider"
 import Cards from "../Cards"
 import { useState } from "react"
 import DialogAlert from "../DialogAlert"
@@ -18,14 +18,14 @@ const Services = () =>{
     const [alertSeverity, setAlertSeverity] = useState("info")
 
     const deleteServerData = (id) =>{
-        dispatch(deleteNotification(id))
+        dispatch(updateAccountData(id))
     }
 
     const addServerData = (notification) =>{
         setAlertSeverity("success")
         setAlertContent(`Success Send Notification`)
         setAlertOpen(true)
-        dispatch(addNotification(notification))
+        dispatch(updateAccountData(notification))
     }
 
     const onCreateNotification = (notification) => {

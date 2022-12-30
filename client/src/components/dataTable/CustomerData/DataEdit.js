@@ -14,7 +14,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
         InitPerson.gender = genderFeild[0]
     }
     
-    const [id, setID] = useState(InitPerson.id)
+    const [id, setID] = useState(InitPerson._id)
     const [name, setName] = useState(InitPerson.name)
     const [age, setAge] = useState(InitPerson.age)
     const [gender, setGender] = useState(InitPerson.gender)
@@ -29,20 +29,20 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
         }
         else if(!isCreate){
             onUpdate({
-                id:id ,
+                _id:data._id ,
                 name:name, 
                 age: age,
                 gender: gender,
                 address: address,
                 telephone: telephone,
-                buy_products : [],
-                stores: [],
+                buy_products : data.buy_products,
+                stores: data.stores,
             })
             onCancel()
         }
         else{
             onCreate({
-                id:id ,
+                _id:1 ,
                 name:name, 
                 age: age,
                 gender: gender,

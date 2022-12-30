@@ -22,7 +22,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
     }
     
 
-    const [id, setID] = useState(InitProduct.id)
+    const [id, setID] = useState(InitProduct._id)
     const [name, setName] = useState(InitProduct.name)
     const [type, setType] = useState(InitProduct.type)
     const [code, setCode] = useState(InitProduct.code)
@@ -51,7 +51,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
         }
         else if(!isCreate){
             onUpdate({
-                id:id ,
+                _id:data._id ,
                 name:name, 
                 type:type, 
                 code:code, 
@@ -69,7 +69,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
         }
         else{
             onCreate({
-                id:id ,
+                _id:1 ,
                 name:name, 
                 type:type, 
                 code:code, 

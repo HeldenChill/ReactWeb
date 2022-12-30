@@ -3,7 +3,7 @@ import { useState } from 'react'
 import '../../App.css'
 import useAuthAccount from '../../hooks/useAuthAccount'
 import DataTable from '../dataTable/DataTable'
-import { addData,deleteData,updateData } from '../../features/AuthProvider'
+import { updateAccountData, FetchServerData, PutServerData, DeleteServerData, PostServerData } from '../../features/AuthProvider'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 
@@ -11,19 +11,20 @@ import { useEffect } from 'react'
 const Products = () => {
   console.log("Product Page Render")
 
+  
   const dispatch = useDispatch()
   const accountState = useAuthAccount()
   const [data, setData] = useState(accountState.data)
 
   const addServerData = function(product){
-    dispatch(addData(product))  
+    PostServerData(product,"product").then(() => FetchServerData("product").then(() => dispatch(updateAccountData())))
   }
   const updateServerData = function(product){
-    dispatch(updateData(product))
+    PutServerData(product._id,product,"product").then(() => FetchServerData("product").then(() => dispatch(updateAccountData())))
   }
 
   const deleteServerData = function(id){
-    dispatch(deleteData(id))
+    DeleteServerData(id, "product").then(() => FetchServerData("product").then(() => dispatch(updateAccountData())))
   }
   useEffect(() => {
     setData(accountState.data)

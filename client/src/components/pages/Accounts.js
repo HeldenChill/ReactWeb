@@ -3,7 +3,8 @@ import { useState } from 'react'
 import '../../App.css'
 import useAuthAccount from '../../hooks/useAuthAccount'
 import DataTable from '../dataTable/AccountData/DataTable'
-import { addAccountData,AccountFeilds,AccountType,deleteAccountData,updateAccountData } from '../../features/AuthProvider'
+import { AccountFeilds,AccountType,
+  updateAccountData,PostServerData, FetchServerData,PutServerData, DeleteServerData } from '../../features/AuthProvider'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 
@@ -15,14 +16,16 @@ const Accounts = () => {
   const [data, setData] = useState(accountState.accountData)
 
   const addServerData = function(account){
-    dispatch(addAccountData(account))  
+    PostServerData(account,"account").then(() => FetchServerData("account").then(() => dispatch(updateAccountData())))
+    
   }
   const updateServerData = function(account){
-    dispatch(updateAccountData(account))
+    PutServerData(account._id,account,"account").then(() => FetchServerData("account").then(() => dispatch(updateAccountData())))
   }
 
   const deleteServerData = function(id){
-    dispatch(deleteAccountData(id))
+    DeleteServerData(id, "account").then(() => FetchServerData("account").then(() => dispatch(updateAccountData())))
+    
   }
   useEffect(() => {
     setData(accountState.accountData)

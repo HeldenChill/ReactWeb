@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from '../Button'
 import './SignIn.css'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { checkValidAccount, logoutAccount } from '../../features/AuthProvider'
+import { checkValidAccount, logoutAccount, updateAccountData } from '../../features/AuthProvider'
+import { FetchServerData,FetchAllData } from '../../features/AuthProvider'
 import useAuthAccount from '../../hooks/useAuthAccount'
 
 const SignIn = () => {
@@ -16,12 +17,16 @@ const SignIn = () => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [isDirty, setIsDirty] = useState(true)
+	useEffect(() => {
+		FetchServerData("product").then(FetchServerData("customer").then(FetchServerData("notification").then(dispatch(updateAccountData()))))				
+	},[accountState.isInAccount])
 
 	const ProcessCheckingAccount = () => {	
-			dispatch(checkValidAccount({
+			FetchServerData("account").then(() => dispatch(checkValidAccount({
 				username: username,
 				password: password
-			}))
+			})))
+			
 			setIsDirty(false)							
 	}
 

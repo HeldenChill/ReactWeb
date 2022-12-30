@@ -42,9 +42,10 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
 
   const onUpdate = function(product){   
     // onSaveServerData({newData})
+    
     setAlertSeverity("success")
     setAlertContent(`Update Product Success
-    - ID: ${product.id} 
+    - ID: ${product._id} 
     - Customer ID: ${product.customer_id}`)
     setAlertOpen(true)
     onUpdateServerData(product)
@@ -183,8 +184,8 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
                 onCreate={onSave}
                 onUpdate={onUpdate}
                 onDelete={onDelete} 
-                id={rowData.id} 
-                key={rowData.id}></TableRow>
+                id={rowData._id} 
+                key={rowData._id}></TableRow>
               })
             }
             {addDataForm}           

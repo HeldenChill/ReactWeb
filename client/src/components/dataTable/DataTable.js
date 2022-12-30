@@ -56,9 +56,10 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
 
   const onUpdate = function(product){   
     // onSaveServerData({newData})
+    console.log(product)
     setAlertSeverity("success")
     setAlertContent(`Update Product Success
-    - ID: ${product.id} 
+    - ID: ${product._id} 
     - Customer ID: ${product.customer_id}`)
     setAlertOpen(true)
     onUpdateServerData(product)
@@ -66,7 +67,7 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
 
   const onSell = function(payload, rowData){
     var product = {
-      id:rowData.id ,
+      _id:rowData._id ,
       name:rowData.name, 
       type:rowData.type, 
       code:rowData.code, 
@@ -77,13 +78,13 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
       produced_by:rowData.produced_by,
       produced_time:rowData.produced_time,
       sold_time:payload.sold_time,
-      customer_id:payload.id,
+      customer_id:payload.customer_id,
       sold_by:rowData.sold_by,
     }
-    console.log(product)
+    console.log(payload)
     setAlertSeverity("success")
     setAlertContent(`Sell Product Success
-    - ID: ${product.id} 
+    - ID: ${product._id} 
     - Customer ID: ${product.customer_id}`)
     setAlertOpen(true)
     onUpdateServerData(product)
@@ -325,8 +326,8 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
                 onUpdate={onUpdate}
                 onDelete={onDelete} 
                 _onSell={onSell}
-                id={rowData.id} 
-                key={rowData.id}>                
+                id={rowData._id} 
+                key={rowData._id}>                
                 </TableRow>
               })
             }

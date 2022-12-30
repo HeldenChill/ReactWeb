@@ -10,7 +10,7 @@ const TableRow = ({rowData, selectData, onCreate, onUpdate, onDelete, id}) => {
     const createDataFeild = function(name, key){
         switch(name){
             case "Id":
-                return <td key={key}>{rowData.id}</td>
+                return <td key={key}>{rowData._id}</td>
             case "Name":
                 return <td key={key}>{rowData.name}</td>
             case "Age":
