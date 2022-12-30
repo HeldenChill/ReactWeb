@@ -164,7 +164,7 @@ const DataEdit = ({onCreate, onUpdate, onCancel, data,selectData, isCreate=false
                         </td>
             case "Customer ID":
                 return  <td key={key} className="edit-td">
-                            <input disabled={!isAdmin} style={{maxWidth: "80%"}} type= "number" name="error_times" id="error_times" value={customerId} onChange={e => UpdateInput(e, setCustomerId)}/>                              
+                            <input disabled={!isAdmin} style={{maxWidth: "80%"}} type= "text" name="cus_id" id="cus_id" value={customerId} onChange={e => UpdateInput(e, setCustomerId)}/>                              
                         </td> 
         }
     }

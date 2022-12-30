@@ -26,14 +26,14 @@ export const DefaultProduct = {
     customer_id: -1,
     sold_by: "",
   }
-export const ProductType = ["Fan" ,"TV" ,"Fridge", "Car"]
+export const ProductType = ["Fan" ,"TV" ,"Fridge", "Car","Smartphone"]
 export const ProductStatus = ["In Stock", "On Sale", "Under Warranty", "Error", "Sold", "Returned"]
 export const DataFeilds = ["Name", "Type", "Code", "Error Times", "Price", "Status", "Position", "Produced By", "Produced Time", "Sold Time", "Customer ID"]
 export const AccountFeilds = ["Username","Password","Type","Position"]
 const AccountDataFields = {
     Admin: ["Name", "Type", "Code", "Error Times", "Price", "Status", "Position", "Produced By", "Produced Time", "Sold Time", "Customer ID"],
     Producer: ["Name", "Type", "Code", "Status", "Position", "Produced Time", "Sold Time"],
-    Seller: ["Name", "Type", "Code", "Price", "Status", "Position", "Sold Time"],
+    Seller: ["Name", "Type", "Code", "Price", "Status", "Position", "Sold Time","Customer ID"],
     Insurance: ["Name", "Type", "Code", "Error Times", "Status", "Position","Produced By", "Produced Time","Customer ID"],
     None: []
 }
@@ -434,7 +434,7 @@ const UpdateState = function(state){
     state.allPositionFeild = [...AccountsPositions.Producer, ...AccountsPositions.Seller, ...AccountsPositions.Insurance]
 
     const newNotiData = []
-    for(let i = 0; i < notifications.length; i++){
+    for(i = 0; i < notifications.length; i++){
         if(notifications[i].des_position.toLowerCase().includes(state.accountPosition.toLowerCase())){
             newNotiData.push(notifications[i])
         }

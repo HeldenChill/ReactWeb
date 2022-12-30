@@ -11,7 +11,7 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
  
   const genderFeild = selectData.genderFeild
 
-  const [id, setID] = useState(0)
+  const [id, setID] = useState("")
   const [name, setName] = useState("")
   const [minAge, setMinAge] = useState(0)
   const [maxAge, setMaxAge] = useState(0)
@@ -82,8 +82,8 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
 
     if(filterState["Id"]){
       var newData = []
-      for(var i = 0; i < lastData.length; i++){
-        if(lastData[i]._id === id){
+      for(let i = 0; i < lastData.length; i++){
+        if(lastData[i]._id.toLowerCase().includes(id.toLowerCase())){
           newData.push(lastData[i])
         }
       }
@@ -105,7 +105,7 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
     }
     if(filterState["Gender"]){
       var newData = []
-      for(var i = 0; i < lastData.length; i++){
+      for(let i = 0; i < lastData.length; i++){
         if(lastData[i].gender === gender){
           newData.push(lastData[i])
         }
@@ -118,7 +118,7 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
       }
       else{     
         var newData = []
-        for(var i = 0; i < lastData.length; i++){
+        for(let i = 0; i < lastData.length; i++){
           if(lastData[i].address.toLowerCase().includes(address.toLowerCase())){
             newData.push(lastData[i])
           }
@@ -132,7 +132,7 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
       }
       else{     
         var newData = []
-        for(var i = 0; i < lastData.length; i++){
+        for(let i = 0; i < lastData.length; i++){
           if(lastData[i].telephone.toLowerCase().includes(telephone.toLowerCase())){
             newData.push(lastData[i])
           }
@@ -142,7 +142,7 @@ const DataTable = ({rawData, selectData, onAddServerData, onUpdateServerData, on
     }
     if(filterState["Age"]){
       var newData = []
-      for(var i = 0; i < lastData.length; i++){
+      for(let i = 0; i < lastData.length; i++){
         if(lastData[i].age >= minAge 
           && lastData[i].age <= maxAge)
           {

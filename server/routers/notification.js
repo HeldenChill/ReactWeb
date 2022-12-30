@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const productControllers = require('../controllers/product.js')
+const notificationControllers = require('../controllers/notification.js')
 
-router.get('/',productControllers.getProduct);
-router.post('/',productControllers.addProduct);
-router.put('/:id',productControllers.updateProduct);
-router.delete('/:id',productControllers.deleteProduct);
+router.get('/',notificationControllers.getNotification)
+
+router.post('/',notificationControllers.addNotification)
+
+router.delete('/:id', notificationControllers.deleteNotification);
+
+module.exports = router
